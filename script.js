@@ -1,698 +1,383 @@
+// Wait for DOM content to be fully loaded
 document.addEventListener('DOMContentLoaded', function() {
-    // Animate elements on load
-    setTimeout(() => {
-        document.body.classList.add('loaded');
-    }, 300);
+    // Ensure images are loaded before showing
+    preloadImages();
     
-    // Show donation request modal after 10 seconds
-    setTimeout(() => {
-        const donateModal = document.getElementById('donateRequestModal');
-        if (donateModal) {
-            donateModal.style.display = 'flex';
-            setTimeout(() => {
-                donateModal.style.opacity = '1';
-            }, 10);
-            
-            // Prevent scrolling
-            document.body.style.overflow = 'hidden';
-            
-            // Set up donate button to scroll to donate section
-            const donateBtn = document.getElementById('donateNowBtn');
-            if (donateBtn) {
-                donateBtn.addEventListener('click', () => {
-                    // Close the modal
-                    closeModal(donateModal);
-                    
-                    // Scroll to donate section
-                    const donateSection = document.getElementById('support');
-                    if (donateSection) {
-                        const targetPosition = donateSection.getBoundingClientRect().top + window.pageYOffset - 20;
-                        butterScroll(targetPosition, butterScrollOptions.speed, butterScrollOptions.easing);
-                    }
-                });
+    // Handle popup functionality
+    setupPopup();
+    
+    // Performance optimization - use passive event listeners
+    const supportsPassive = false;
+    try {
+        const opts = Object.defineProperty({}, 'passive', {
+            get: function() {
+                supportsPassive = true;
+                return true;
             }
-        }
-    }, 10000); // 10 seconds
+        });
+        window.addEventListener("testPassive", null, opts);
+        window.removeEventListener("testPassive", null, opts);
+    } catch (e) {}
     
-    // Enhanced ultra-smooth scrolling
-    const butterScrollOptions = {
-        speed: 1200,
-        easing: 'cubicBezier',
-        offset: 0,
-        damping: 0.08,
-        friction: 0.8
-    };
+    const passiveOption = supportsPassive ? { passive: true } : false;
     
-    // Advanced easing functions for ultra-smooth physics
-    const easingFunctions = {
-        easeInOutQuint: function(t) {
-            return t < 0.5 ? 16 * t * t * t * t * t : 1 + 16 * (--t) * t * t * t * t;
-        },
-        cubicBezier: function(t) {
-            // Creates a silky, soft ease - like butter
-            return t * (3.0 - 2.0 * t) * t;
-        },
-        soft: function(t) {
-            // Super soft easing, like melting butter
-            return t * t * (3 - 2 * t) * (1 + 2 * t * (1 - t));
-        }
-    };
+    // Create bubble particles
+    createBubbles();
     
-    // Initialize Butter.js-like smoothness
-    class ButterScroller {
-        constructor() {
-            this.targetY = 0;
-            this.currentY = window.pageYOffset;
-            this.isScrolling = false;
-            this.scrollRAF = null;
-            this.damping = butterScrollOptions.damping;
-            this.friction = butterScrollOptions.friction;
+    // Phone slider functionality with smooth image transitions
+    const dots = document.querySelectorAll('.dot');
+    const screenContainers = document.querySelectorAll('.screen-image-container');
+    
+    // Make sure first image is visible
+    document.querySelector('.screen-image-container[data-screen="phone-2-screen"]').classList.add('active');
+    
+    dots.forEach(dot => {
+        dot.addEventListener('click', function() {
+            const screenId = this.getAttribute('data-screen');
             
-            // Set up scroll listeners
-            window.addEventListener('scroll', this.onScroll.bind(this), { passive: true });
-            
-            // Start the animation loop
-            this.update();
-        }
-        
-        onScroll() {
-            this.targetY = window.pageYOffset;
-            if (!this.isScrolling) {
-                this.isScrolling = true;
-                this.currentY = window.pageYOffset;
-            }
-        }
-        
-        update() {
-            if (this.isScrolling) {
-                // Calculate delta with physics
-                const delta = this.targetY - this.currentY;
-                const acceleration = delta * this.damping;
-                
-                if (Math.abs(delta) < 0.1) {
-                    this.currentY = this.targetY;
-                    this.isScrolling = false;
-                } else {
-                    // Apply friction and damping for butter-smooth movement
-                    this.currentY += acceleration * this.friction;
-                    
-                    // Apply the smooth transformation
-                    document.body.style.transform = `translateY(${-this.currentY * 0.1}px) scale(${1 + Math.abs(delta) * 0.0001})`;
-                    document.body.style.willChange = 'transform';
-                }
-            } else {
-                document.body.style.transform = '';
-                document.body.style.willChange = 'auto';
-            }
-            
-            // Continue the loop
-            this.scrollRAF = requestAnimationFrame(this.update.bind(this));
-        }
-    }
-    
-    // Initialize butter-smooth scroll only on non-touch devices
-    if (!('ontouchstart' in window)) {
-        const butterScroller = new ButterScroller();
-    }
-    
-    // Super smooth scroll implementation
-    function butterScroll(targetY, duration, easing) {
-        const startY = window.pageYOffset;
-        const difference = targetY - startY;
-        const startTime = performance.now();
-        
-        // Cancel any ongoing animations to prevent conflict
-        if (window._butterScrollTimeout) {
-            clearTimeout(window._butterScrollTimeout);
-            window._butterScrollAnimationFrame = null;
-        }
-        
-        function step() {
-            const currentTime = performance.now() - startTime;
-            const progress = Math.min(currentTime / duration, 1);
-            const easedProgress = easingFunctions[easing](progress);
-            
-            window.scrollTo({
-                top: startY + difference * easedProgress,
-                behavior: 'auto' // We're manually handling the animation
+            // Update active screen
+            screenContainers.forEach(screen => {
+                screen.classList.remove('active');
+            });
+            document.querySelectorAll(`[data-screen="${screenId}"]`).forEach(screen => {
+                screen.classList.add('active');
             });
             
-            if (progress < 1) {
-                window._butterScrollAnimationFrame = window.requestAnimationFrame(step);
-            } else {
-                // Set a timeout to ensure final position is reached
-                window._butterScrollTimeout = setTimeout(() => {
-                    window.scrollTo({
-                        top: targetY,
-                        behavior: 'auto'
-                    });
-                }, 100);
-            }
-        }
-        
-        window.requestAnimationFrame(step);
-    }
+            // Update active dot
+            dots.forEach(d => d.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
     
-    // Improved smooth scrolling for navigation links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            if (!this.getAttribute('data-modal')) {
+    // Auto rotate phone previews
+    let currentScreenIndex = 0;
+    const screens = ['phone-2-screen', 'phone-1-screen', 'phone-3-screen'];
+    
+    const autoRotateInterval = setInterval(() => {
+        currentScreenIndex = (currentScreenIndex + 1) % screens.length;
+        const currentScreen = screens[currentScreenIndex];
+        
+        // Update active screen
+        screenContainers.forEach(screen => {
+            screen.classList.remove('active');
+        });
+        document.querySelectorAll(`[data-screen="${currentScreen}"]`).forEach(screen => {
+            screen.classList.add('active');
+        });
+        
+        // Update active dot
+        dots.forEach(d => d.classList.remove('active'));
+        document.querySelector(`[data-screen="${currentScreen}"]`).classList.add('active');
+    }, 4000);
+    
+    // Stop rotation when user interacts with dots
+    dots.forEach(dot => {
+        dot.addEventListener('click', () => {
+            clearInterval(autoRotateInterval);
+        });
+    });
+    
+    // Setup Coming Soon popup
+    function setupPopup() {
+        const storeButtons = document.querySelectorAll('.store-btn');
+        const popup = document.getElementById('comingSoonPopup');
+        const closeBtn = document.getElementById('closePopup');
+        const popupCloseBtn = document.getElementById('popupCloseBtn');
+        
+        // Show popup when store buttons are clicked
+        storeButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
                 e.preventDefault();
                 
-                const targetId = this.getAttribute('href');
-                
-                if (targetId === '#') return;
-                
-                const targetElement = document.querySelector(targetId);
-                
-                if (targetElement) {
-                    const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - butterScrollOptions.offset;
-                    butterScroll(targetPosition, butterScrollOptions.speed, butterScrollOptions.easing);
-                    
-                    // Update URL without refreshing page
-                    window.history.pushState(null, null, targetId);
-                }
-            }
-        });
-    });
-    
-    // Apply ultra-smooth wheel scrolling
-    let wheelOpt = { passive: false };
-    let wheelEvent = 'onwheel' in document.createElement('div') ? 'wheel' : 'mousewheel';
-    
-    // Advanced wheel handler with physics
-    let lastScrollTime = 0;
-    let scrollAmountQueue = 0;
-    let isProcessingScroll = false;
-    
-    window.addEventListener(wheelEvent, function(e) {
-        const now = performance.now();
-        
-        // Add wheel delta to queue but with damping
-        scrollAmountQueue += e.deltaY * 0.3;
-        
-        // Limit maximum scroll speed
-        scrollAmountQueue = Math.sign(scrollAmountQueue) * Math.min(Math.abs(scrollAmountQueue), 300);
-        
-        if (!isProcessingScroll) {
-            isProcessingScroll = true;
-            
-            function processScrollQueue() {
-                if (Math.abs(scrollAmountQueue) < 0.5) {
-                    scrollAmountQueue = 0;
-                    isProcessingScroll = false;
-                    return;
-                }
-                
-                // Apply scroll with physical damping
-                window.scrollBy({
-                    top: scrollAmountQueue * 0.2,
-                    behavior: 'auto'
-                });
-                
-                // Reduce queue with friction
-                scrollAmountQueue *= 0.85;
-                
-                requestAnimationFrame(processScrollQueue);
-            }
-            
-            requestAnimationFrame(processScrollQueue);
-        }
-        
-        lastScrollTime = now;
-    }, wheelOpt);
-    
-    // Mobile menu toggle
-    const menuToggle = document.querySelector('.menu-toggle');
-    const navItems = document.querySelector('.nav-items');
-    
-    if (menuToggle && navItems) {
-        menuToggle.addEventListener('click', function() {
-            navItems.classList.toggle('show');
-            
-            if (navItems.classList.contains('show')) {
-                navItems.style.display = 'flex';
-                navItems.style.flexDirection = 'column';
-                navItems.style.position = 'absolute';
-                navItems.style.top = '100%';
-                navItems.style.left = '0';
-                navItems.style.right = '0';
-                navItems.style.backgroundColor = 'white';
-                navItems.style.padding = '1rem 2rem';
-                navItems.style.boxShadow = '0 5px 10px rgba(0, 0, 0, 0.1)';
-                navItems.style.zIndex = '99';
-            } else {
-                navItems.style.display = '';
-            }
-        });
-    }
-    
-    // Image slider for app preview
-    const sliderImages = document.querySelectorAll('.phone-mockup img');
-    const dots = document.querySelectorAll('.dot');
-    let currentSlide = 0;
-    
-    // Function to show a specific slide
-    function showSlide(index) {
-        sliderImages.forEach(img => {
-            img.style.opacity = '0';
-            img.classList.remove('active');
-        });
-        dots.forEach(dot => dot.classList.remove('active'));
-        
-        setTimeout(() => {
-            sliderImages[index].classList.add('active');
-            sliderImages[index].style.opacity = '1';
-            dots[index].classList.add('active');
-        }, 300);
-        
-        currentSlide = index;
-    }
-    
-    // Set up click events for dots
-    dots.forEach((dot, index) => {
-        dot.addEventListener('click', () => {
-            showSlide(index);
-            
-            // Reset auto rotation
-            clearInterval(slideInterval);
-            slideInterval = setInterval(autoSlide, index === 0 ? 5000 : 3000);
-        });
-    });
-    
-    // Auto-rotate slides with different timing
-    function autoSlide() {
-        const nextSlide = (currentSlide + 1) % sliderImages.length;
-        showSlide(nextSlide);
-        
-        // Set different times for first slide vs others
-        const nextDelay = nextSlide === 0 ? 5000 : 3000;
-        clearInterval(slideInterval);
-        slideInterval = setInterval(autoSlide, nextDelay);
-    }
-    
-    // Start auto rotation with 5 seconds for first slide
-    let slideInterval = setInterval(autoSlide, 5000);
-    
-    // Pause rotation when hovering over the slider
-    const phoneContainer = document.querySelector('.phone-mockup');
-    if (phoneContainer) {
-        phoneContainer.addEventListener('mouseenter', () => {
-            clearInterval(slideInterval);
-        });
-        
-        phoneContainer.addEventListener('mouseleave', () => {
-            const nextDelay = currentSlide === 0 ? 5000 : 3000;
-            slideInterval = setInterval(autoSlide, nextDelay);
-        });
-        
-        // Add 3D tilt effect to phone mockup only on desktop
-        if (window.innerWidth > 768) {
-            phoneContainer.addEventListener('mousemove', (e) => {
-                const rect = phoneContainer.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-                
-                const deltaX = (x - centerX) / centerX;
-                const deltaY = (y - centerY) / centerY;
-                
-                phoneContainer.style.transform = `perspective(1000px) rotateY(${deltaX * 8}deg) rotateX(${-deltaY * 8}deg)`;
-            });
-            
-            phoneContainer.addEventListener('mouseleave', () => {
-                phoneContainer.style.transform = 'none';
-            });
-        }
-    }
-    
-    // Modal functionality
-    const modalTriggers = document.querySelectorAll('[data-modal]');
-    const modals = document.querySelectorAll('.modal');
-    const closeButtons = document.querySelectorAll('.close-modal');
-    
-    // Open modal
-    modalTriggers.forEach(trigger => {
-        trigger.addEventListener('click', (e) => {
-            e.preventDefault();
-            const modalId = trigger.getAttribute('data-modal');
-            const modal = document.getElementById(modalId);
-            
-            if (modal) {
-                modal.style.display = 'flex';
+                // Add active class with a small delay for better animation
                 setTimeout(() => {
-                    modal.style.opacity = '1';
+                    popup.classList.add('active');
+                    
+                    // After popup is visible, animate the content
+                    setTimeout(() => {
+                        popup.querySelector('.popup-content').style.opacity = '1';
+                        popup.querySelector('.popup-content').style.transform = 'translateY(0)';
+                    }, 50);
                 }, 10);
+            });
+        });
+        
+        // Close popup when close button is clicked
+        closeBtn.addEventListener('click', closePopup);
+        popupCloseBtn.addEventListener('click', closePopup);
+        
+        // Close popup when clicking outside the content
+        popup.addEventListener('click', function(e) {
+            if (e.target === popup) {
+                closePopup();
+            }
+        });
+        
+        // Close popup with escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && popup.classList.contains('active')) {
+                closePopup();
+            }
+        });
+        
+        function closePopup() {
+            // Animate out
+            popup.querySelector('.popup-content').style.opacity = '0';
+            popup.querySelector('.popup-content').style.transform = 'translateY(20px)';
+            
+            // After content animation, hide the overlay
+            setTimeout(() => {
+                popup.classList.remove('active');
+            }, 300);
+        }
+    }
+    
+    // Preload images function
+    function preloadImages() {
+        const images = [
+            'preview1.jpg',
+            'preview2.jpg',
+            'preview3.jpg'
+        ];
+        
+        // Set first image active immediately
+        const firstScreenContainer = document.querySelector('.screen-image-container[data-screen="phone-2-screen"]');
+        if (firstScreenContainer) {
+            firstScreenContainer.classList.add('active');
+            
+            // Force browser to load and render the image
+            const firstImage = firstScreenContainer.querySelector('img');
+            if (firstImage) {
+                firstImage.style.visibility = 'visible';
                 
-                // Add event to close when clicking outside
-                modal.addEventListener('click', (e) => {
-                    if (e.target === modal) {
-                        closeModal(modal);
+                // Create a temporary img element to ensure it's loaded
+                const tempImg = new Image();
+                tempImg.onload = function() {
+                    // Once loaded, make sure it's visible
+                    firstImage.style.opacity = '1';
+                };
+                tempImg.src = firstImage.src;
+            }
+        }
+        
+        // Preload all images
+        images.forEach(src => {
+            const img = new Image();
+            img.src = src;
+        });
+    }
+    
+    // Lazy load images for better performance
+    const lazyImages = document.querySelectorAll('img');
+    
+    if ('IntersectionObserver' in window) {
+        const imageObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    if (!img.hasAttribute('data-loaded')) {
+                        // Force the image to load
+                        const tempImg = new Image();
+                        tempImg.onload = function() {
+                            img.setAttribute('data-loaded', 'true');
+                        };
+                        tempImg.src = img.src;
+                        imageObserver.unobserve(img);
+                    }
+                }
+            });
+        });
+        
+        lazyImages.forEach(img => {
+            imageObserver.observe(img);
+        });
+    }
+    
+    // Enhanced Intersection Observer for fade-in effect with better performance
+    const animatedElements = document.querySelectorAll('.glass-card, .feature');
+    
+    if ('IntersectionObserver' in window) {
+        const fadeObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    requestAnimationFrame(() => {
+                        entry.target.classList.add('fade-in');
+                        fadeObserver.unobserve(entry.target);
+                    });
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        });
+        
+        animatedElements.forEach(element => {
+            element.style.opacity = '0';
+            fadeObserver.observe(element);
+        });
+    } else {
+        // Fallback for browsers that don't support IntersectionObserver
+        animatedElements.forEach(element => {
+            element.style.opacity = '1';
+        });
+    }
+    
+    // Debounced parallax effect for glassmorphic cards
+    let ticking = false;
+    const glassCards = document.querySelectorAll('.glass-card');
+    
+    function updateParallax(e) {
+        if (!ticking) {
+            window.requestAnimationFrame(() => {
+                glassCards.forEach(card => {
+                    const rect = card.getBoundingClientRect();
+                    const cardCenterX = rect.left + rect.width / 2;
+                    const cardCenterY = rect.top + rect.height / 2;
+                    
+                    const distanceX = (e.clientX - cardCenterX) / 30;
+                    const distanceY = (e.clientY - cardCenterY) / 30;
+                    
+                    // Only apply effect if mouse is relatively close to the card and card is in viewport
+                    const distance = Math.sqrt(Math.pow(e.clientX - cardCenterX, 2) + Math.pow(e.clientY - cardCenterY, 2));
+                    
+                    if (distance < 400 && rect.top < window.innerHeight && rect.bottom > 0) {
+                        card.style.transform = `perspective(1000px) rotateX(${-distanceY * 0.05}deg) rotateY(${distanceX * 0.05}deg)`;
+                    } else {
+                        card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
                     }
                 });
-                
-                // Prevent scrolling
-                document.body.style.overflow = 'hidden';
-            }
-        });
-    });
-    
-    // Close modal function
-    function closeModal(modal) {
-        modal.style.opacity = '0';
-        setTimeout(() => {
-            modal.style.display = 'none';
-            document.body.style.overflow = '';
-        }, 300);
+                ticking = false;
+            });
+            ticking = true;
+        }
     }
     
-    // Close when clicking X
-    closeButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            const modal = button.closest('.modal');
-            closeModal(modal);
+    // Only use parallax effect on desktop devices
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    if (!isMobile) {
+        window.addEventListener('mousemove', updateParallax, passiveOption);
+        
+        window.addEventListener('mouseleave', () => {
+            glassCards.forEach(card => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
+            });
+        }, passiveOption);
+    }
+    
+    // Optimized ripple effect for buttons
+    const buttons = document.querySelectorAll('.btn');
+    
+    buttons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            const x = e.clientX - button.getBoundingClientRect().left;
+            const y = e.clientY - button.getBoundingClientRect().top;
+            
+            const ripple = document.createElement('span');
+            ripple.classList.add('ripple');
+            ripple.style.left = `${x}px`;
+            ripple.style.top = `${y}px`;
+            
+            button.appendChild(ripple);
+            
+            setTimeout(() => {
+                ripple.remove();
+            }, 600);
         });
     });
     
-    // Close when pressing Escape
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-            modals.forEach(modal => {
-                if (modal.style.display === 'flex') {
-                    closeModal(modal);
+    // Add smooth scrolling that works across browsers
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
+            
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                // Smooth scroll using modern API if available
+                if ('scrollBehavior' in document.documentElement.style) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                } else {
+                    // Fallback for browsers that don't support smooth scrolling
+                    window.scrollTo(0, targetElement.offsetTop - 80);
                 }
-            });
-        }
-    });
-    
-    // Intersection Observer for revealing elements when scrolled into view
-    const observerOptions = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.1
-    };
-    
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('in-view');
-                observer.unobserve(entry.target);
             }
         });
-    }, observerOptions);
-    
-    // Observe all sections and features
-    document.querySelectorAll('.card-section, .feature, .step').forEach(element => {
-        observer.observe(element);
     });
     
-    // Particle effect in the background
-    const backgroundDecoration = document.querySelector('.background-decoration');
-    if (backgroundDecoration) {
-        // Adjust number of particles based on screen size
-        const particleCount = window.innerWidth < 768 ? 15 : 25;
+    // Create bubble particles
+    function createBubbles() {
+        const bubblesContainer = document.querySelector('.bubbles');
+        const bubbleCount = window.innerWidth < 768 ? 20 : 40;
         
-        for (let i = 0; i < particleCount; i++) {
-            const particle = document.createElement('div');
-            particle.classList.add('particle');
+        for (let i = 0; i < bubbleCount; i++) {
+            const size = Math.random() * 80 + 20;
+            const bubble = document.createElement('div');
+            bubble.classList.add('bubble');
             
-            // Random properties
-            const size = Math.random() * 15 + 5;
+            // Random position
             const posX = Math.random() * 100;
             const posY = Math.random() * 100;
-            const opacity = Math.random() * 0.3;
-            const animationDuration = Math.random() * 15 + 10;
-            const animationDelay = Math.random() * 5;
+            
+            // Random movement direction and duration for float animation
+            const moveX = (Math.random() * 40 - 20) + 'px';
+            const moveY = (Math.random() * 40 - 20) + 'px';
+            const duration = (Math.random() * 3 + 2) + 's'; // Faster duration (2-5s)
+            const opacity = Math.random() * 0.3 + 0.1;
+            
+            // Random values for the more dynamic movement
+            const randomY = Math.random() * 50 - 25;  // -25 to 25
+            const randomX = Math.random() * 50 - 25;  // -25 to 25
+            const randomY2 = Math.random() * 50 - 25; // -25 to 25
+            const randomX2 = Math.random() * 50 - 25; // -25 to 25
+            const randomY3 = Math.random() * 50 - 25; // -25 to 25
+            const randomX3 = Math.random() * 50 - 25; // -25 to 25
             
             // Apply styles
-            particle.style.width = `${size}px`;
-            particle.style.height = `${size}px`;
-            particle.style.left = `${posX}%`;
-            particle.style.top = `${posY}%`;
-            particle.style.opacity = opacity;
-            particle.style.animationDuration = `${animationDuration}s`;
-            particle.style.animationDelay = `${animationDelay}s`;
+            bubble.style.setProperty('--duration', duration);
+            bubble.style.setProperty('--move-x', moveX);
+            bubble.style.setProperty('--move-y', moveY);
+            bubble.style.setProperty('--opacity', opacity.toString());
             
-            backgroundDecoration.appendChild(particle);
+            // Apply random movement variables
+            bubble.style.setProperty('--random-y', randomY);
+            bubble.style.setProperty('--random-x', randomX);
+            bubble.style.setProperty('--random-y2', randomY2);
+            bubble.style.setProperty('--random-x2', randomX2);
+            bubble.style.setProperty('--random-y3', randomY3);
+            bubble.style.setProperty('--random-x3', randomX3);
+            
+            bubble.style.width = size + 'px';
+            bubble.style.height = size + 'px';
+            bubble.style.left = posX + 'vw';
+            bubble.style.top = posY + 'vh';
+            
+            bubblesContainer.appendChild(bubble);
+            
+            // Add extra animation for some bubbles
+            if (Math.random() > 0.7) {
+                // Add a pulsate effect to some bubbles
+                bubble.style.animation += ', pulsate 3s ease-in-out infinite';
+            }
         }
     }
-
-    // Responsive shape movement - less parallax on mobile
-    document.addEventListener('mousemove', (e) => {
-        if (window.innerWidth <= 768) return; // Disable on mobile
-        
-        const mouseX = e.clientX / window.innerWidth;
-        const mouseY = e.clientY / window.innerHeight;
-        
-        document.querySelectorAll('.shape').forEach(shape => {
-            const speed = shape.getAttribute('data-speed') || 0.03;
-            
-            shape.style.transform = `translate(${(mouseX * speed * 60) - 30}px, ${(mouseY * speed * 60) - 30}px)`;
-        });
-    });
     
-    // Button hover effect
-    document.querySelectorAll('.app-btn, .donate-btn, .modal-btn').forEach(button => {
-        button.addEventListener('mouseenter', () => {
-            if (window.innerWidth > 768) {
-                button.style.transform = 'translateY(-3px)';
-                button.style.boxShadow = '0 8px 20px rgba(0, 0, 0, 0.3)';
-            }
-        });
-        
-        button.addEventListener('mouseleave', () => {
-            button.style.transform = '';
-            button.style.boxShadow = '';
-        });
-    });
-
-    // Add CSS for particles and modal
-    const styleSheet = document.createElement('style');
-    styleSheet.type = 'text/css';
-    styleSheet.innerHTML = `
-        .particle {
-            position: absolute;
-            border-radius: 50%;
-            background: linear-gradient(45deg, rgba(200, 182, 255, 0.4), rgba(156, 124, 245, 0.2));
-            pointer-events: none;
-            animation: float linear infinite;
-        }
-        
-        @keyframes float {
-            0% {
-                transform: translateY(0) translateX(0) rotate(0);
-            }
-            25% {
-                transform: translateY(-15px) translateX(10px) rotate(90deg);
-            }
-            50% {
-                transform: translateY(-30px) translateX(-10px) rotate(180deg);
-            }
-            75% {
-                transform: translateY(-15px) translateX(-15px) rotate(270deg);
-            }
-            100% {
-                transform: translateY(0) translateX(0) rotate(360deg);
-            }
-        }
-        
-        .in-view {
-            opacity: 1 !important;
-            transform: translateY(0) !important;
-        }
-        
-        body.loaded .shape {
-            opacity: 1;
-            transform: scale(1);
-        }
-        
-        .card-section {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
-        }
-        
-        .card-section.in-view {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        .modal {
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
-        .modal-content {
-            transform: translateY(20px);
-            transition: transform 0.3s ease;
-        }
-        
-        .modal[style*="display: flex"] .modal-content {
-            transform: translateY(0);
-        }
-    `;
-    document.head.appendChild(styleSheet);
-    
-    // Add initial attributes to shapes
-    document.querySelector('.shape-1').setAttribute('data-speed', '0.02');
-    document.querySelector('.shape-2').setAttribute('data-speed', '0.03');
-    document.querySelector('.shape-3').setAttribute('data-speed', '0.01');
-
-    // Apply initial styles to shapes
-    document.querySelectorAll('.shape').forEach(shape => {
-        shape.style.opacity = '0';
-        shape.style.transform = 'scale(0.8)';
-        shape.style.transition = 'opacity 1s ease, transform 1s ease';
-    });
-    
-    // Handle resize events for better responsiveness
+    // Resize handler
+    let resizeTimeout;
     window.addEventListener('resize', () => {
-        if (window.innerWidth <= 768) {
-            document.querySelectorAll('.shape').forEach(shape => {
-                shape.style.transform = 'none';
-            });
-        }
-    });
-
-    // Variables to store donation information
-    let donorName = "";
-    let donationAmount = 0;
-    
-    // Handle donate now button click in the support section
-    const donateNowButton = document.querySelector('.donate-btn');
-    if (donateNowButton) {
-        donateNowButton.addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            // Open donation form modal
-            const donationFormModal = document.getElementById('donationFormModal');
-            if (donationFormModal) {
-                donationFormModal.style.display = 'flex';
-                setTimeout(() => {
-                    donationFormModal.style.opacity = '1';
-                }, 10);
-                
-                // Prevent scrolling
-                document.body.style.overflow = 'hidden';
+        if (resizeTimeout) clearTimeout(resizeTimeout);
+        
+        resizeTimeout = setTimeout(() => {
+            // Remove existing bubbles and create new ones
+            const bubblesContainer = document.querySelector('.bubbles');
+            while (bubblesContainer.firstChild) {
+                bubblesContainer.removeChild(bubblesContainer.firstChild);
             }
-        });
-    }
-    
-    // Handle donation form submission
-    const donationForm = document.getElementById('donationForm');
-    if (donationForm) {
-        donationForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Get form data
-            donorName = document.getElementById('donorName').value.trim();
-            donationAmount = document.getElementById('donationAmount').value;
-            
-            // Validate
-            if (!donorName || !donationAmount || donationAmount <= 0) {
-                alert('Please provide valid name and amount');
-                return;
-            }
-            
-            // Store data in localStorage (in case user refreshes page)
-            localStorage.setItem('grozily_donor_name', donorName);
-            localStorage.setItem('grozily_donation_amount', donationAmount);
-            localStorage.setItem('grozily_donation_pending', 'true');
-            
-            // Close the modal
-            const donationFormModal = document.getElementById('donationFormModal');
-            closeModal(donationFormModal);
-            
-            // Open UPI payment in new window
-            const upiId = "mohammadizhan710@oksbi";
-            const upiUrl = `upi://pay?pa=${upiId}&pn=GrozilySupportTeam&am=${donationAmount}&cu=INR&tn=Donation_for_Grozily`;
-            
-            // Open UPI link
-            window.location.href = upiUrl;
-            
-            // Show completion modal after a short delay (assuming the user has returned to the website)
-            setTimeout(() => {
-                // Check if we need to show completion modal (user has returned)
-                checkAndShowCompletionModal();
-            }, 1000);
-        });
-    }
-    
-    // Function to check if we need to show completion modal (when user returns from UPI app)
-    function checkAndShowCompletionModal() {
-        if (localStorage.getItem('grozily_donation_pending') === 'true') {
-            // Get stored data
-            const storedName = localStorage.getItem('grozily_donor_name');
-            const storedAmount = localStorage.getItem('grozily_donation_amount');
-            
-            if (storedName && storedAmount) {
-                // Update confirmation amount
-                const confirmAmount = document.getElementById('confirmAmount');
-                if (confirmAmount) {
-                    confirmAmount.textContent = storedAmount;
-                }
-                
-                // Show completion modal
-                const paymentCompletionModal = document.getElementById('paymentCompletionModal');
-                if (paymentCompletionModal) {
-                    paymentCompletionModal.style.display = 'flex';
-                    setTimeout(() => {
-                        paymentCompletionModal.style.opacity = '1';
-                    }, 10);
-                    
-                    // Prevent scrolling
-                    document.body.style.overflow = 'hidden';
-                }
-            }
-        }
-    }
-    
-    // Check if we need to show completion modal on page load
-    checkAndShowCompletionModal();
-    
-    // Handle payment completion
-    const completePaymentBtn = document.getElementById('completePaymentBtn');
-    if (completePaymentBtn) {
-        completePaymentBtn.addEventListener('click', function() {
-            // Get stored data
-            const storedName = localStorage.getItem('grozily_donor_name');
-            const storedAmount = localStorage.getItem('grozily_donation_amount');
-            
-            if (storedName && storedAmount) {
-                // Create WhatsApp message
-                const whatsappNumber = "+919596153432";
-                const message = `Hello Izhaan, I've completed a donation of ₹${storedAmount} for Grozily. My name is ${storedName}. Thank you for creating this platform for Kashmir!`;
-                const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
-                
-                // Open WhatsApp
-                window.open(whatsappUrl, '_blank');
-                
-                // Clear stored data
-                localStorage.removeItem('grozily_donor_name');
-                localStorage.removeItem('grozily_donation_amount');
-                localStorage.removeItem('grozily_donation_pending');
-                
-                // Close the modal
-                const paymentCompletionModal = document.getElementById('paymentCompletionModal');
-                closeModal(paymentCompletionModal);
-            }
-        });
-    }
-    
-    // Handle payment cancellation
-    const cancelPaymentBtn = document.getElementById('cancelPaymentBtn');
-    if (cancelPaymentBtn) {
-        cancelPaymentBtn.addEventListener('click', function() {
-            // Clear stored data
-            localStorage.removeItem('grozily_donor_name');
-            localStorage.removeItem('grozily_donation_amount');
-            localStorage.removeItem('grozily_donation_pending');
-            
-            // Close the modal
-            const paymentCompletionModal = document.getElementById('paymentCompletionModal');
-            closeModal(paymentCompletionModal);
-        });
-    }
+            createBubbles();
+        }, 300);
+    }, passiveOption);
 }); 

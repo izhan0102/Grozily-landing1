@@ -3,299 +3,184 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grozily - Kashmir's First Hyperlocal Grocery Delivery</title>
+    <title>Grozily - Kashmir's Hyperlocal Grocery Delivery</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Baloo+2:wght@400;500;600;700&family=Fredoka+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body class="purple-theme smooth-scroll butter-scroll">
-    <!-- Coming Soon Modal -->
-    <div class="modal" id="comingSoonModal">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <div class="modal-body">
-                <i class="fas fa-rocket modal-icon rocket-icon"></i>
-                <h2>Coming Soon!</h2>
-                <p>We're working hard to launch Grozily on app stores.</p>
-                <p>Stay tuned for updates!</p>
-                <button class="modal-btn">Get Notified at Launch</button>
-            </div>
+<body>
+    <!-- Coming Soon Popup -->
+    <div class="popup-overlay" id="comingSoonPopup">
+        <div class="popup-content glass-card">
+            <div class="popup-close" id="closePopup">&times;</div>
+            <div class="popup-icon"><i class="fas fa-clock"></i></div>
+            <h2>Coming Soon!</h2>
+            <p>Our app is currently under development. We'll be launching on app stores very soon.</p>
+            <p>Stay tuned for updates!</p>
+            <button class="btn btn-primary" id="popupCloseBtn">Got it</button>
         </div>
     </div>
     
-    <!-- Donation Request Modal -->
-    <div class="modal" id="donateRequestModal">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <div class="modal-body">
-                <i class="fas fa-hand-holding-heart modal-icon donate-icon"></i>
-                <h2>Hello, I'm Izhaan!</h2>
-                <p class="developer-title">Developer of Grozily</p>
-                <p>I need your help in building Grozily, cutting costs, and making the release process faster.</p>
-                <button class="modal-btn" id="donateNowBtn">Click here to donate</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Donation Form Modal -->
-    <div class="modal" id="donationFormModal">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <div class="modal-body">
-                <i class="fas fa-heart modal-icon donate-icon"></i>
-                <h2>Support Grozily</h2>
-                <form id="donationForm">
-                    <div class="form-group">
-                        <label for="donorName">Your Name</label>
-                        <input type="text" id="donorName" required placeholder="Enter your name">
-                    </div>
-                    <div class="form-group">
-                        <label for="donationAmount">Donation Amount (₹)</label>
-                        <input type="number" id="donationAmount" required min="1" placeholder="Enter amount in Rupees">
-                    </div>
-                    <button type="submit" class="modal-btn" id="proceedToPayBtn">Proceed to Payment</button>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Payment Completion Modal -->
-    <div class="modal" id="paymentCompletionModal">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <div class="modal-body">
-                <i class="fas fa-check-circle modal-icon donate-icon"></i>
-                <h2>Complete Payment</h2>
-                <p>Did you complete your payment?</p>
-                <p class="donation-details">Your donation: ₹<span id="confirmAmount">0</span></p>
-                <button class="modal-btn" id="completePaymentBtn">Yes, I've Completed Payment</button>
-                <button class="modal-secondary-btn" id="cancelPaymentBtn">No, Cancel</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="background-decoration">
-        <div class="shape shape-1"></div>
-        <div class="shape shape-2"></div>
-        <div class="shape shape-3"></div>
-    </div>
-
-    <section class="hero">
-        <div class="hero-content animate__animated animate__fadeInLeft">
-            <h1>Welcome to Grozily</h1>
-            <p>Kashmir's first hyperlocal grocery delivery platform—simple, fast, and built for the people by one of their own.</p>
-            <div class="app-buttons">
-                <a href="#" class="app-btn" data-modal="comingSoonModal"><i class="fab fa-google-play"></i> Get on Play Store</a>
-                <a href="#" class="app-btn" data-modal="comingSoonModal"><i class="fab fa-apple"></i> Get on App Store</a>
-            </div>
-        </div>
-        <div class="app-preview animate__animated animate__fadeInRight">
-            <div class="phone-mockup">
-                <div class="slider-container">
-                    <img src="preview2.jpg" alt="Grozily App Preview" class="active">
-                    <img src="preview1.jpg" alt="Grozily App Preview">
-                    <img src="preview3.jpg" alt="Grozily App Preview">
-                </div>
-                <div class="slider-dots">
-                    <span class="dot active" data-index="0"></span>
-                    <span class="dot" data-index="1"></span>
-                    <span class="dot" data-index="2"></span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <div class="content-container">
-        <section id="problem" class="problem card-section glass-card">
-            <div class="container">
-                <h2 class="section-title animate__animated animate__fadeIn">The Problem</h2>
-                <p class="animate__animated animate__fadeIn">In Kashmir, access to groceries isn't always easy. Shops are scattered, deliveries are inconsistent, and many stores aren't digitally connected at all. Customers often wait long hours or even days for basic household needs. Shopkeepers, too, lose customers due to lack of digital presence.</p>
-            </div>
-        </section>
-
-        <section id="solution" class="solution card-section glass-card">
-            <div class="solution-glow"></div>
-            <div class="container">
-                <h2 class="section-title animate__animated animate__fadeIn"><span class="highlight">The Solution</span></h2>
-                <p class="animate__animated animate__fadeIn solution-intro">Grozily connects your local kirana shops and marts to a modern, simple-to-use app.</p>
+    <!-- Bubble particles -->
+    <div class="bubbles" aria-hidden="true"></div>
+    
+    <div class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1 class="fade-in">Welcome to Grozily</h1>
+                <p class="fade-in delay-1">Kashmir's first hyperlocal grocery delivery platform—simple, fast, and built for the people by one of their own.</p>
                 
-                <div class="solution-flow">
-                    <div class="solution-steps">
-                        <div class="step animate__animated animate__fadeInUp">
-                            <div class="step-icon"><i class="fas fa-search"></i></div>
-                            <div class="step-text">You browse</div>
-                            <div class="step-detail">Browse groceries from local stores near you</div>
-                        </div>
-                        <div class="step-connector">
-                            <div class="step-arrow">→</div>
-                            <div class="connector-line"></div>
-                        </div>
-                        <div class="step animate__animated animate__fadeInUp" style="animation-delay: 0.2s">
-                            <div class="step-icon"><i class="fas fa-shopping-cart"></i></div>
-                            <div class="step-text">You order</div>
-                            <div class="step-detail">Add items to cart and place your order</div>
-                        </div>
-                        <div class="step-connector">
-                            <div class="step-arrow">→</div>
-                            <div class="connector-line"></div>
-                        </div>
-                        <div class="step animate__animated animate__fadeInUp" style="animation-delay: 0.4s">
-                            <div class="step-icon"><i class="fas fa-truck"></i></div>
-                            <div class="step-text">Shop delivers</div>
-                            <div class="step-detail">The nearest shop delivers to your doorstep</div>
+                <div class="app-buttons fade-in delay-2">
+                    <a href="#" class="btn btn-primary store-btn" data-store="play"><i class="fab fa-google-play"></i> Get on Play Store</a>
+                    <a href="#" class="btn btn-secondary store-btn" data-store="apple"><i class="fab fa-apple"></i> Get on App Store</a>
+                </div>
+            </div>
+            
+            <!-- Phone Slider in Hero -->
+            <div class="hero-phone-slider">
+                <div class="phone-container active" id="phone-container">
+                    <div class="phone">
+                        <div class="phone-screen">
+                            <!-- Preload images directly in the markup to ensure first image loads properly -->
+                            <img src="preview2.jpg" alt="Grozily App Preview" style="display: none;">
+                            <img src="preview1.jpg" alt="Grozily App Preview" style="display: none;">
+                            <img src="preview3.jpg" alt="Grozily App Preview" style="display: none;">
+                            
+                            <div class="screen-image-container active" data-screen="phone-2-screen">
+                                <img src="preview2.jpg" alt="Grozily App Preview">
+                            </div>
+                            <div class="screen-image-container" data-screen="phone-1-screen">
+                                <img src="preview1.jpg" alt="Grozily App Preview">
+                            </div>
+                            <div class="screen-image-container" data-screen="phone-3-screen">
+                                <img src="preview3.jpg" alt="Grozily App Preview">
+                            </div>
                         </div>
                     </div>
                 </div>
-                
-                <div class="solution-benefits">
-                    <p class="tagline animate__animated animate__fadeIn">That's it. No middlemen. No inflated prices.</p>
-                    <p class="animate__animated animate__fadeIn">Vendors register with us and upload their products. You order, they deliver. Quick, local, and reliable.</p>
+                <div class="slider-controls">
+                    <span class="dot active" data-screen="phone-2-screen"></span>
+                    <span class="dot" data-screen="phone-1-screen"></span>
+                    <span class="dot" data-screen="phone-3-screen"></span>
                 </div>
             </div>
         </section>
 
-        <section id="difference" class="difference card-section glass-card">
-            <div class="container">
-                <h2 class="section-title animate__animated animate__fadeIn">What Makes Grozily Different</h2>
-                <p class="animate__animated animate__fadeIn">While big platforms dominate cities, Grozily is rooted in Kashmir's reality.</p>
-                <div class="features">
-                    <div class="feature animate__animated animate__zoomIn">
-                        <div class="feature-icon"><i class="fas fa-store"></i></div>
-                        <h3>Hyperlocal focus</h3>
-                        <p>Only your local, trusted stores</p>
-                    </div>
-                    <div class="feature animate__animated animate__zoomIn" style="animation-delay: 0.2s">
-                        <div class="feature-icon"><i class="fas fa-cogs"></i></div>
-                        <h3>Real-time vendor control</h3>
-                        <p>Vendors manage their own listings</p>
-                    </div>
-                    <div class="feature animate__animated animate__zoomIn" style="animation-delay: 0.4s">
-                        <div class="feature-icon"><i class="fas fa-bolt"></i></div>
-                        <h3>Light & fast</h3>
-                        <p>Optimized for even slow networks</p>
-                    </div>
-                    <div class="feature animate__animated animate__zoomIn" style="animation-delay: 0.6s">
-                        <div class="feature-icon"><i class="fas fa-percentage"></i></div>
-                        <h3>Low platform fees</h3>
-                        <p>Just 5%, so vendors earn more</p>
-                    </div>
+        <!-- Problem Section -->
+        <section class="problem glass-card">
+            <h2>The Problem</h2>
+            <p>In Kashmir, access to groceries isn't always easy. Shops are scattered, deliveries are inconsistent, and many stores aren't digitally connected at all. Customers often wait long hours or even days for basic household needs. Shopkeepers, too, lose customers due to lack of digital presence.</p>
+        </section>
+
+        <!-- Solution Section -->
+        <section class="solution glass-card">
+            <h2>The Solution</h2>
+            <p>Grozily connects your local kirana shops and marts to a modern, simple-to-use app.</p>
+            
+            <div class="process-steps">
+                <div class="step">
+                    <div class="step-icon"><i class="fas fa-search"></i></div>
+                    <h3>You browse</h3>
+                    <p>Browse groceries from local stores near you</p>
+                </div>
+                <div class="step-arrow">→</div>
+                <div class="step">
+                    <div class="step-icon"><i class="fas fa-shopping-cart"></i></div>
+                    <h3>You order</h3>
+                    <p>Add items to cart and place your order</p>
+                </div>
+                <div class="step-arrow">→</div>
+                <div class="step">
+                    <div class="step-icon"><i class="fas fa-truck"></i></div>
+                    <h3>Shop delivers</h3>
+                    <p>The nearest shop delivers to your doorstep</p>
+                </div>
+            </div>
+            
+            <p class="tagline">That's it. No middlemen. No inflated prices.</p>
+            <p>Vendors register with us and upload their products. You order, they deliver. Quick, local, and reliable.</p>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features glass-card">
+            <h2>What Makes Grozily Different</h2>
+            <p>While big platforms dominate cities, Grozily is rooted in Kashmir's reality.</p>
+            
+            <div class="features-grid">
+                <div class="feature">
+                    <div class="feature-icon"><i class="fas fa-map-marker-alt"></i></div>
+                    <h3>Hyperlocal focus</h3>
+                    <p>Only your local, trusted stores</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon"><i class="fas fa-store"></i></div>
+                    <h3>Real-time vendor control</h3>
+                    <p>Vendors manage their own listings</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon"><i class="fas fa-bolt"></i></div>
+                    <h3>Light & fast</h3>
+                    <p>Optimized for even slow networks</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon"><i class="fas fa-percent"></i></div>
+                    <h3>Low platform fees</h3>
+                    <p>Just 5%, so vendors earn more</p>
                 </div>
             </div>
         </section>
 
-        <section id="about" class="about card-section glass-card">
-            <div class="container">
-                <h2 class="section-title animate__animated animate__fadeIn">About the Developer</h2>
-                <div class="developer-info">
-                    <div class="developer-photo animate__animated animate__pulse animate__infinite">
-                        <i class="fas fa-user-circle"></i>
-                    </div>
-                    <div class="developer-bio animate__animated animate__fadeIn">
-                        <p>I'm an 18-year-old developer from Kashmir, working to make local shopping easier and smarter through technology.</p>
-                        <p>Growing up in Srinagar, I saw how disconnected our local businesses were from the digital revolution happening elsewhere. That's why I started Grozily — to bridge this gap and create something that truly works for our community.</p>
-                        <p>With no external funding or large team, I'm building this platform step by step — coding late nights, meeting with shopkeepers personally, and solving problems as they come.</p>
-                        <p>This is just the beginning, and I'm learning and building as I go — hoping to make a small difference in Kashmir's digital landscape, one store at a time.</p>
-                    </div>
-                </div>
-            </div>
+        <!-- About Section -->
+        <section class="about glass-card">
+            <h2>About the Developer</h2>
+            <p>I'm an 18-year-old developer from Kashmir, working to make local shopping easier and smarter through technology.</p>
+            <p>Growing up in Srinagar, I saw how disconnected our local businesses were from the digital revolution happening elsewhere. That's why I started Grozily — to bridge this gap and create something that truly works for our community.</p>
+            <p>With no external funding or large team, I'm building this platform step by step — coding late nights, meeting with shopkeepers personally, and solving problems as they come.</p>
+            <p>This is just the beginning, and I'm learning and building as I go — hoping to make a small difference in Kashmir's digital landscape, one store at a time.</p>
         </section>
 
-        <!-- Pitch Section - Why Grozily is Different -->
-        <section id="pitch" class="pitch card-section glass-card">
-            <div class="pitch-glow"></div>
-            <div class="container">
-                <h2 class="section-title animate__animated animate__fadeIn">Why Grozily is Different — and Has <span class="highlight">No Real Competition</span></h2>
-                
-                <div class="pitch-content">
-                    <div class="pitch-block problem-block animate__animated animate__fadeIn">
-                        <p class="pitch-emphasis">Big delivery apps are broken by design...</p>
-                        <p>The current food delivery marketplace is dominated by large platforms that prioritize their own profits over the needs of local communities. These platforms charge vendors excessive fees (up to 30-35% per order), create complicated onboarding processes, and often limit service availability to "premium zones" only.</p>
-                    </div>
-                    
-                    <div class="pitch-block solution-block animate__animated animate__fadeIn">
-                        <p class="pitch-emphasis">Grozily takes a fundamentally different approach:</p>
-                        
-                        <div class="pitch-advantages">
-                            <div class="pitch-advantage animate__animated animate__fadeIn">
-                                <i class="fas fa-store-alt"></i>
-                                <div>
-                                    <p><strong>Focus on local stores</strong> rather than chains, giving visibility to small businesses that are typically overlooked</p>
-                                </div>
-                            </div>
-                            
-                            <div class="pitch-advantage animate__animated animate__fadeIn">
-                                <i class="fas fa-hand-holding-usd"></i>
-                                <div>
-                                    <p><strong>Minimal fees for vendors</strong> to ensure fair compensation and sustainability, with no complicated onboarding procedures</p>
-                                </div>
-                            </div>
-                            
-                            <div class="pitch-advantage animate__animated animate__fadeIn">
-                                <i class="fas fa-users"></i>
-                                <div>
-                                    <p><strong>Direct access for customers</strong> to products they need, with transparent pricing and no hidden fees</p>
-                                </div>
-                            </div>
-                            
-                            <div class="pitch-advantage animate__animated animate__fadeIn">
-                                <i class="fas fa-shipping-fast"></i>
-                                <div>
-                                    <p><strong>Optimized delivery</strong> focusing on clusters rather than "premium zones," serving communities that larger platforms ignore</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <p class="tagline pitch-tagline animate__animated animate__fadeIn">With Grozily, you'll never see:</p>
-                    
-                    <div class="pitch-contrasts">
-                        <div class="contrast-item animate__animated animate__fadeIn">
-                            <div class="contrast-icon"><i class="fas fa-times"></i></div>
-                            <p>Overpriced aggregators</p>
-                        </div>
-                        
-                        <div class="contrast-item animate__animated animate__fadeIn">
-                            <div class="contrast-icon"><i class="fas fa-times"></i></div>
-                            <p>Complicated vendor setup</p>
-                        </div>
-                        
-                        <div class="contrast-item animate__animated animate__fadeIn">
-                            <div class="contrast-icon"><i class="fas fa-times"></i></div>
-                            <p>"Premium-only" zones</p>
-                        </div>
-                    </div>
-                    
-                    <p class="pitch-conclusion animate__animated animate__fadeIn">
-                        <span class="highlight-text">Grozily is designed from the ground up</span> to be a fair platform that prioritizes community needs over corporate profits, making it a truly unique solution in the delivery space.
-                    </p>
-                </div>
-            </div>
+        <!-- Comparison Section -->
+        <section class="comparison glass-card">
+            <h2>Why Grozily is Different — and Has No Real Competition</h2>
+            <p class="subtitle">Big delivery apps are broken by design...</p>
+            
+            <p>The current food delivery marketplace is dominated by large platforms that prioritize their own profits over the needs of local communities. These platforms charge vendors excessive fees (up to 30-35% per order), create complicated onboarding processes, and often limit service availability to "premium zones" only.</p>
+            
+            <h3>Grozily takes a fundamentally different approach:</h3>
+            <ul>
+                <li>Focus on local stores rather than chains, giving visibility to small businesses that are typically overlooked</li>
+                <li>Minimal fees for vendors to ensure fair compensation and sustainability, with no complicated onboarding procedures</li>
+                <li>Direct access for customers to products they need, with transparent pricing and no hidden fees</li>
+                <li>Optimized delivery focusing on clusters rather than "premium zones," serving communities that larger platforms ignore</li>
+            </ul>
+            
+            <h3>With Grozily, you'll never see:</h3>
+            <ul class="never-list">
+                <li><i class="fas fa-times"></i> Overpriced aggregators</li>
+                <li><i class="fas fa-times"></i> Complicated vendor setup</li>
+                <li><i class="fas fa-times"></i> "Premium-only" zones</li>
+            </ul>
+            
+            <p>Grozily is designed from the ground up to be a fair platform that prioritizes community needs over corporate profits, making it a truly unique solution in the delivery space.</p>
         </section>
 
         <!-- Support Section -->
-        <section id="support" class="support card-section glass-card">
-            <div class="donate-glow"></div>
-            <div class="container">
-                <h2 class="section-title animate__animated animate__fadeIn">Support the Mission</h2>
-                <div class="support-content">
-                    <div class="support-text">
-                        <p class="animate__animated animate__fadeIn">Grozily is fully bootstrapped. Every feature, design, and improvement is built with love and long nights.</p>
-                        <p class="animate__animated animate__fadeIn">If you believe in empowering local businesses and want to support the mission, consider donating:</p>
-                    </div>
-                    <div class="donate-container">
-                        <a href="#" class="donate-btn animate__animated animate__pulse animate__infinite">Donate Now</a>
-                    </div>
-                    <div class="support-goals animate__animated animate__fadeIn">
-                        <h3>Your donation helps us:</h3>
-                        <ul>
-                            <li><i class="fas fa-check-circle"></i> Onboard more vendors</li>
-                            <li><i class="fas fa-check-circle"></i> Run local awareness campaigns</li>
-                            <li><i class="fas fa-check-circle"></i> Improve delivery reach and speed</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+        <section class="support glass-card">
+            <h2>Support the Mission</h2>
+            <p>Grozily is fully bootstrapped. Every feature, design, and improvement is built with love and long nights.</p>
+            <p>If you believe in empowering local businesses and want to support the mission, consider donating:</p>
+            
+            <a href="#" class="btn btn-primary donate-btn">Donate Now</a>
+            
+            <h3>Your donation helps us:</h3>
+            <ul>
+                <li>Onboard more vendors</li>
+                <li>Run local awareness campaigns</li>
+                <li>Improve delivery reach and speed</li>
+            </ul>
         </section>
     </div>
 
