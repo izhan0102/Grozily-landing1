@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Policies - Grozily</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="icon" href="logo.jpg" type="image/jpeg">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Fredoka+One&family=Pacifico&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+            height: 100%;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #9933ff 0%, #6600cc 100%) fixed;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            will-change: transform;
+            -webkit-overflow-scrolling: touch;
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #9933ff 0%, #6600cc 100%);
+            z-index: -2;
+        }
+        
+        .bubbles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        
+        .bubble {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.05);
+            will-change: transform;
+            transform: translateZ(0);
+            animation: float 25s linear infinite;
+        }
+        
+        .bubble:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            left: 10%;
+            animation-duration: 25s;
+            animation-delay: 0s;
+            opacity: 0.4;
+        }
+        
+        .bubble:nth-child(2) {
+            width: 120px;
+            height: 120px;
+            left: 25%;
+            animation-duration: 30s;
+            animation-delay: 1s;
+            opacity: 0.2;
+        }
+        
+        .bubble:nth-child(3) {
+            width: 50px;
+            height: 50px;
+            left: 40%;
+            animation-duration: 20s;
+            animation-delay: 5s;
+            opacity: 0.3;
+        }
+        
+        .bubble:nth-child(4) {
+            width: 150px;
+            height: 150px;
+            left: 70%;
+            animation-duration: 35s;
+            animation-delay: 0s;
+            opacity: 0.15;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+            }
+            100% {
+                transform: translateY(-20vh) rotate(360deg);
+            }
+        }
+        
+        .header {
+            text-align: center;
+            padding: 30px 20px;
+            position: relative;
+        }
+        
+        .back-btn {
+            position: absolute;
+            left: 20px;
+            top: 30px;
+            color: white;
+            font-size: 24px;
+            text-decoration: none;
+            transition: transform 0.3s;
+        }
+        
+        .back-btn:hover {
+            transform: translateX(-5px);
+        }
+        
+        .site-name {
+            font-size: 32px;
+            font-weight: 700;
+            color: white;
+            position: relative;
+            letter-spacing: 0.5px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            font-family: 'Fredoka One', cursive;
+            margin-bottom: 5px;
+        }
+        
+        .policies-title {
+            font-family: 'Pacifico', cursive;
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .main-content {
+            flex: 1;
+            padding: 0 20px 40px;
+            max-width: 900px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        .policy-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .policy-tab {
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .policy-tab.active {
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px);
+        }
+        
+        .policy-tab:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+        
+        .policy-content {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+        
+        .policy-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .policy-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #fff;
+            text-align: center;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .policy-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 2px;
+        }
+        
+        .policy-text {
+            font-size: 16px;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: 15px;
+        }
+        
+        .policy-section {
+            margin-bottom: 25px;
+        }
+        
+        .policy-section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+        
+        .policy-list {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .policy-list li {
+            margin-bottom: 8px;
+            color: rgba(255, 255, 255, 0.95);
+            line-height: 1.5;
+        }
+        
+        .policy-contact {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .policy-contact a {
+            color: #64ffda;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .policy-contact a:hover {
+            text-decoration: underline;
+            color: #b3fff0;
+        }
+        
+        @media (max-width: 768px) {
+            .site-name {
+                font-size: 28px;
+            }
+            
+            .policies-title {
+                font-size: 20px;
+            }
+            
+            .policy-content {
+                padding: 20px;
+            }
+            
+            .policy-title {
+                font-size: 22px;
+            }
+            
+            .policy-text {
+                font-size: 15px;
+            }
+            
+            .back-btn {
+                font-size: 20px;
+            }
+            
+            .policy-tab {
+                padding: 8px 15px;
+                font-size: 14px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .site-name {
+                font-size: 24px;
+            }
+            
+            .policies-title {
+                font-size: 18px;
+            }
+            
+            .main-content {
+                padding: 0 15px 30px;
+            }
+            
+            .policy-content {
+                padding: 15px;
+            }
+            
+            .policy-title {
+                font-size: 20px;
+                margin-bottom: 15px;
+            }
+            
+            .policy-text {
+                font-size: 14px;
+                line-height: 1.5;
+            }
+            
+            .policy-section-title {
+                font-size: 16px;
+            }
+            
+            .policy-tabs {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .policy-tab {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bubbles">
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+    </div>
+
+    <div class="header">
+        <a href="/" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+        <div class="site-name">Grozily</div>
+        <div class="policies-title">Legal Policies</div>
+    </div>
+
+    <div class="main-content">
+        <div class="policy-tabs">
+            <div class="policy-tab active" data-tab="privacy">Privacy Policy</div>
+            <div class="policy-tab" data-tab="terms">Terms & Conditions</div>
+            <div class="policy-tab" data-tab="refund">Refund Policy</div>
+        </div>
+        
+        <div class="policy-content active" id="privacy-policy">
+            <h2 class="policy-title">Privacy Policy</h2>
+            
+            <div class="policy-section">
+                <p class="policy-text">We respect your privacy. Our app collects essential information such as your name, contact number, delivery address, and payment details to process orders and ensure timely delivery.</p>
+                
+                <p class="policy-text">We do not sell or share your data with third-party advertisers. Your data may be shared with vendors or delivery agents only as necessary to fulfill your orders.</p>
+                
+                <p class="policy-text">By using our app, you agree to our collection and use of information in accordance with this policy.</p>
+            </div>
+            
+            <div class="policy-contact">
+                <p>For any privacy-related concerns, contact us at: <a href="mailto:grozily.shop@gmail.com">grozily.shop@gmail.com</a></p>
+            </div>
+        </div>
+        
+        <div class="policy-content" id="terms-conditions">
+            <h2 class="policy-title">Terms & Conditions</h2>
+            
+            <div class="policy-section">
+                <p class="policy-text">By accessing and using our app or services, you agree to:</p>
+                
+                <ul class="policy-list">
+                    <li>Provide accurate information while placing orders.</li>
+                    <li>Use the app only for lawful purposes.</li>
+                    <li>Allow us to share your order and delivery information with vendors and delivery partners.</li>
+                    <li>Understand that delivery times may vary due to local conditions.</li>
+                </ul>
+                
+                <p class="policy-text">We reserve the right to refuse or cancel orders if any fraudulent activity is suspected or if the vendor is unavailable.</p>
+                
+                <p class="policy-text">All disputes will be subject to the jurisdiction of courts in Jammu & Kashmir.</p>
+            </div>
+            
+            <div class="policy-contact">
+                <p>For questions about our terms, contact us at: <a href="mailto:grozily.shop@gmail.com">grozily.shop@gmail.com</a></p>
+            </div>
+        </div>
+        
+        <div class="policy-content" id="refund-policy">
+            <h2 class="policy-title">Refund & Cancellation Policy</h2>
+            
+            <div class="policy-section">
+                <p class="policy-text">You may cancel an order within 5 minutes of placing it, provided the vendor has not started processing.</p>
+                
+                <p class="policy-section-title">Refunds will be initiated in the following cases:</p>
+                <ul class="policy-list">
+                    <li>Vendor rejects or is unable to fulfill the order.</li>
+                    <li>Delivery agent fails to deliver due to internal issues.</li>
+                    <li>Product is damaged, expired, or missing (must be reported within 2 hours of delivery).</li>
+                </ul>
+                
+                <p class="policy-text">Refunds, once approved, will be credited to your original payment method within 5–7 working days.</p>
+            </div>
+            
+            <div class="policy-contact">
+                <p>For support, email us at: <a href="mailto:grozily.shop@gmail.com">grozily.shop@gmail.com</a></p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabs = document.querySelectorAll('.policy-tab');
+            const contents = document.querySelectorAll('.policy-content');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Remove active class from all tabs and contents
+                    tabs.forEach(t => t.classList.remove('active'));
+                    contents.forEach(c => c.classList.remove('active'));
+                    
+                    // Add active class to current tab
+                    this.classList.add('active');
+                    
+                    // Show corresponding content
+                    const tabId = this.getAttribute('data-tab');
+                    let contentToShow;
+                    
+                    if (tabId === 'privacy') {
+                        contentToShow = document.getElementById('privacy-policy');
+                    } else if (tabId === 'terms') {
+                        contentToShow = document.getElementById('terms-conditions');
+                    } else if (tabId === 'refund') {
+                        contentToShow = document.getElementById('refund-policy');
+                    }
+                    
+                    if (contentToShow) {
+                        contentToShow.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html> 

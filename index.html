@@ -3,187 +3,2204 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grozily - Kashmir's Hyperlocal Grocery Delivery</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Grozily Live Stats</title>
+    <!-- Preconnect to external domains for faster resource loading -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://www.gstatic.com">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="icon" href="logo.jpg" type="image/jpeg">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Fredoka+One&family=Pacifico&display=swap" rel="stylesheet">
+    
+    <!-- Critical CSS for above-the-fold content -->
+    <style>
+        .critical-hidden {display: none;}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        /* Optimize scrolling */
+        html {
+            scroll-behavior: smooth;
+            height: 100%;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #9933ff 0%, #6600cc 100%) fixed;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            will-change: transform;
+            -webkit-overflow-scrolling: touch;
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+            padding: 0;
+        }
+        
+        /* Create pseudo element for background to ensure full coverage */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #9933ff 0%, #6600cc 100%);
+            z-index: -2;
+        }
+        
+        /* Optimize renders with contain property */
+        .main-content, .stats-card, .description-container, .features-section {
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            contain: content;
+        }
+        
+        /* Reduce the number of bubbles for better performance */
+        .bubbles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        
+        /* Optimize bubbles */
+        .bubble {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.05);
+            will-change: transform;
+            transform: translateZ(0);
+            animation: float 30s linear infinite;
+            contain: layout size style;
+        }
+        
+        .bubble:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            left: 10%;
+            animation-duration: 30s;
+            animation-delay: 0s;
+            opacity: 0.4;
+        }
+        
+        .bubble:nth-child(2) {
+            width: 120px;
+            height: 120px;
+            left: 25%;
+            animation-duration: 35s;
+            animation-delay: 1s;
+            opacity: 0.2;
+        }
+        
+        .bubble:nth-child(3) {
+            width: 50px;
+            height: 50px;
+            left: 40%;
+            animation-duration: 25s;
+            animation-delay: 5s;
+            opacity: 0.3;
+        }
+        
+        .bubble:nth-child(4) {
+            width: 150px;
+            height: 150px;
+            left: 70%;
+            animation-duration: 40s;
+            animation-delay: 0s;
+            opacity: 0.15;
+        }
+        
+        .bubble:nth-child(5) {
+            width: 70px;
+            height: 70px;
+            left: 85%;
+            animation-duration: 22s;
+            animation-delay: 2s;
+            opacity: 0.25;
+        }
+        
+        .bubble:nth-child(6) {
+            width: 100px;
+            height: 100px;
+            left: 50%;
+            animation-duration: 28s;
+            animation-delay: 7s;
+            opacity: 0.18;
+        }
+        
+        .bubble:nth-child(7) {
+            width: 65px;
+            height: 65px;
+            left: 15%;
+            animation-duration: 24s;
+            animation-delay: 10s;
+            opacity: 0.22;
+        }
+        
+        .bubble:nth-child(8) {
+            width: 95px;
+            height: 95px;
+            left: 60%;
+            animation-duration: 26s;
+            animation-delay: 4s;
+            opacity: 0.28;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+            }
+            100% {
+                transform: translateY(-20vh) rotate(360deg);
+            }
+        }
+        
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 1000;
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        /* Add background color when scrolling for better readability */
+        .header.scrolled {
+            background: rgba(102, 0, 204, 0.9);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .site-name {
+            font-size: 28px;
+            font-weight: 700;
+            color: white;
+            position: relative;
+            letter-spacing: 0.5px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .site-name:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -6px;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to right, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.3));
+            border-radius: 2px;
+        }
+        
+        .navbar {
+            display: flex;
+            align-items: center;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin: 0 15px;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            position: relative;
+            transition: all 0.3s;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: white;
+            transition: width 0.3s;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            z-index: 1001;
+        }
+        
+        .hamburger .bar {
+            display: block;
+            width: 25px;
+            height: 3px;
+            margin: 5px auto;
+            transition: all 0.3s;
+            background-color: white;
+        }
+        
+        .main-content {
+            padding-top: 80px;
+            position: relative;
+            z-index: 1;
+            flex: 1;
+            min-height: calc(100vh - 80px);
+            overflow: hidden;
+            padding-bottom: 20px;
+        }
+        
+        .stats-container {
+            width: 100%;
+            max-width: 100%;
+            padding: 20px;
+        }
+        
+        .stats-card {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3), 
+                        inset 0 2px 2px rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 25px;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+            transition: all 0.3s ease;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .stats-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4), 
+                        inset 0 2px 2px rgba(255, 255, 255, 0.2);
+        }
+        
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px;
+            flex: 1;
+            min-width: 120px;
+            position: relative;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s;
+        }
+        
+        .stat-item:hover {
+            transform: translateY(-8px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .stat-icon {
+            font-size: 32px;
+            margin-bottom: 15px;
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+        
+        .users-icon {
+            color: #64ffda;
+        }
+        
+        .vendors-icon {
+            color: #ea80fc;
+        }
+        
+        .total-icon {
+            color: #ffab40;
+        }
+        
+        .stat-count {
+            font-size: 40px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #fff;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .stat-label {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.9);
+            text-align: center;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        
+        /* Description Section */
+        .description-container {
+            text-align: center;
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        
+        .description-title {
+            font-size: 52px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #fff;
+            text-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+            font-family: 'Fredoka One', cursive;
+            letter-spacing: 2px;
+            background: linear-gradient(to right, #ffffff, #e0e0ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transform: rotate(-2deg);
+            display: inline-block;
+            padding: 0 10px;
+        }
+        
+        .description-subtitle {
+            font-size: 22px;
+            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: 20px;
+            line-height: 1.5;
+            font-family: 'Pacifico', cursive;
+        }
+        
+        .description-text {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 30px;
+            line-height: 1.6;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 12px;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Feature Cards */
+        .features-section {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 0 15px;
+        }
+        
+        .features-title {
+            text-align: center;
+            font-size: 26px;
+            font-weight: 600;
+            margin-bottom: 25px;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            justify-content: center;
+        }
+        
+        /* Optimize feature cards */
+        .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            will-change: transform;
+            transform: translateZ(0);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .feature-icon {
+            font-size: 28px;
+            margin-bottom: 12px;
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            display: flex;
+            align-items: center;
+        }
+        
+        .local-icon {
+            color: #64ffda;
+        }
+        
+        .middlemen-icon {
+            color: #ff8a65;
+        }
+        
+        .lightweight-icon {
+            color: #40c4ff;
+        }
+        
+        .vendor-icon {
+            color: #ea80fc;
+        }
+        
+        .feature-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #fff;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+            position: relative;
+            padding-bottom: 8px;
+        }
+        
+        .feature-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 2px;
+        }
+        
+        .feature-text {
+            font-size: 14px;
+            line-height: 1.5;
+            color: rgba(255, 255, 255, 0.85);
+            flex-grow: 1;
+        }
+        
+        .app-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .app-button {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .app-button:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+        }
+        
+        .app-button i {
+            font-size: 24px;
+            margin-right: 10px;
+        }
+        
+        .app-button-text {
+            text-align: left;
+        }
+        
+        .app-button-text span {
+            display: block;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .app-button-text .small-text {
+            font-size: 12px;
+            font-weight: 400;
+        }
+        
+        .app-button-text .big-text {
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        /* Popup Styles */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(103, 0, 204, 0.8);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            z-index: 9999;
+            display: none;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .popup-overlay.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .popup-content {
+            background: linear-gradient(145deg, #9933ff 0%, #6600cc 100%);
+            width: 90%;
+            max-width: 320px;
+            margin: auto;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+        }
+        
+        .popup-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            color: white;
+            cursor: pointer;
+        }
+        
+        .popup-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+        
+        .popup-title {
+            font-size: 22px;
+            margin-bottom: 15px;
+        }
+        
+        .popup-message {
+            font-size: 15px;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+        
+        .popup-button {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .popup-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .loading {
+            opacity: 1;
+        }
+        
+        .loading-spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .hide-spinner {
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .hamburger {
+                display: block;
+            }
+            
+            .hamburger.active .bar:nth-child(2) {
+                opacity: 0;
+            }
+            
+            .hamburger.active .bar:nth-child(1) {
+                transform: translateY(8px) rotate(45deg);
+            }
+            
+            .hamburger.active .bar:nth-child(3) {
+                transform: translateY(-8px) rotate(-45deg);
+            }
+            
+            .nav-links {
+                position: fixed;
+                left: -100%;
+                top: 80px;
+                gap: 0;
+                flex-direction: column;
+                background: rgba(103, 0, 204, 0.95);
+                backdrop-filter: blur(8px);
+                width: 100%;
+                text-align: center;
+                transition: 0.3s;
+                box-shadow: 0 10px 27px rgba(0, 0, 0, 0.05);
+                padding: 20px 0;
+                z-index: 999;
+            }
+            
+            .nav-links.active {
+                left: 0;
+            }
+            
+            .nav-links li {
+                margin: 16px 0;
+            }
+
+            .main-content {
+                padding-top: 85px;
+            }
+
+            .stats-card {
+                padding: 20px;
+            }
+            
+            .stat-item {
+                min-width: 100px;
+                padding: 12px;
+            }
+            
+            .stat-icon {
+                font-size: 28px;
+            }
+            
+            .stat-count {
+                font-size: 32px;
+                height: 40px;
+            }
+            
+            .loading-spinner {
+                width: 32px;
+                height: 32px;
+            }
+            
+            .stat-label {
+                font-size: 14px;
+            }
+            
+            .site-name {
+                font-size: 24px;
+            }
+            
+            /* Optimize for performance and fix glitches */
+            body {
+                background-attachment: fixed;
+            }
+            
+            .bubble {
+                transform: translate3d(0, 0, 0);
+            }
+            
+            /* Reduce number of bubbles on mobile */
+            .bubble:nth-child(4),
+            .bubble:nth-child(6),
+            .bubble:nth-child(8) {
+                display: none;
+            }
+            
+            .description-title {
+                font-size: 36px;
+            }
+            
+            .description-subtitle {
+                font-size: 18px;
+            }
+            
+            .description-text {
+                font-size: 15px;
+                padding: 15px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .header {
+                padding: 0 15px;
+                height: 70px;
+            }
+            
+            .site-name {
+                font-size: 22px;
+            }
+            
+            .stats-container {
+                padding: 15px;
+            }
+
+            .stats-card {
+                padding: 15px;
+                gap: 10px;
+            }
+            
+            .stat-item {
+                min-width: 90px;
+                padding: 10px;
+            }
+            
+            .stat-icon {
+                font-size: 24px;
+                margin-bottom: 10px;
+            }
+            
+            .stat-count {
+                font-size: 28px;
+                margin-bottom: 5px;
+                height: 35px;
+            }
+            
+            .loading-spinner {
+                width: 28px;
+                height: 28px;
+                border-width: 2px;
+            }
+            
+            .stat-label {
+                font-size: 12px;
+            }
+            
+            .app-buttons {
+                gap: 15px;
+            }
+            
+            .app-button {
+                padding: 8px 15px;
+            }
+            
+            .app-button i {
+                font-size: 20px;
+            }
+            
+            .app-button-text .small-text {
+                font-size: 10px;
+            }
+            
+            .app-button-text .big-text {
+                font-size: 14px;
+            }
+            
+            .description-title {
+                font-size: 32px;
+            }
+            
+            .description-subtitle {
+                font-size: 16px;
+            }
+            
+            .description-text {
+                font-size: 14px;
+                padding: 12px;
+                line-height: 1.5;
+            }
+            
+            .main-content {
+                padding-bottom: 30px; /* Add more padding at the bottom on small screens */
+                min-height: calc(100vh - 70px); /* Account for smaller header */
+            }
+        }
+        
+        @media (min-width: 769px) {
+            .features-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 20px;
+            }
+            
+            .feature-card {
+                padding: 20px;
+            }
+            
+            .feature-title {
+                font-size: 20px;
+            }
+            
+            .feature-text {
+                font-size: 15px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .features-grid {
+                gap: 12px;
+            }
+            
+            .feature-card {
+                padding: 12px;
+            }
+            
+            .feature-title {
+                font-size: 16px;
+                margin-bottom: 8px;
+                padding-bottom: 6px;
+            }
+            
+            .feature-text {
+                font-size: 13px;
+                line-height: 1.4;
+            }
+            
+            .features-title {
+                font-size: 22px;
+                margin-bottom: 20px;
+            }
+        }
+        
+        /* Delivery Section Styles */
+        .delivery-section {
+            max-width: 900px;
+            margin: 40px auto 30px;
+            padding: 0 15px;
+        }
+        
+        .delivery-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2), 
+                        inset 0 2px 2px rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .delivery-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3), 
+                        inset 0 2px 2px rgba(255, 255, 255, 0.2);
+        }
+        
+        .delivery-title {
+            text-align: center;
+            font-size: 26px;
+            font-weight: 600;
+            margin-bottom: 25px;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            position: relative;
+            padding-bottom: 12px;
+        }
+        
+        .delivery-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 2px;
+        }
+        
+        .delivery-content {
+            display: flex;
+            align-items: flex-start;
+            gap: 25px;
+        }
+        
+        .delivery-icon {
+            font-size: 50px;
+            color: #64ffda;
+            flex-shrink: 0;
+            margin-top: 10px;
+            text-shadow: 0 0 10px rgba(100, 255, 218, 0.4);
+        }
+        
+        .delivery-text p {
+            font-size: 16px;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 15px;
+        }
+        
+        .delivery-text p:last-child {
+            margin-bottom: 0;
+        }
+        
+        @media (max-width: 768px) {
+            .delivery-content {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                gap: 15px;
+            }
+            
+            .delivery-icon {
+                margin-bottom: 5px;
+            }
+            
+            .delivery-title {
+                font-size: 24px;
+            }
+            
+            .delivery-text p {
+                font-size: 15px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .delivery-container {
+                padding: 20px 15px;
+            }
+            
+            .delivery-title {
+                font-size: 22px;
+                margin-bottom: 15px;
+            }
+            
+            .delivery-text p {
+                font-size: 14px;
+                line-height: 1.5;
+            }
+            
+            .delivery-icon {
+                font-size: 40px;
+            }
+        }
+        
+        /* Team Section Styles */
+        .team-section {
+            max-width: 900px;
+            margin: 40px auto 30px;
+            padding: 0 15px;
+        }
+        
+        .team-title {
+            text-align: center;
+            font-size: 36px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            position: relative;
+            padding-bottom: 12px;
+            font-family: 'Fredoka One', cursive;
+        }
+        
+        .team-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 2px;
+        }
+        
+        .team-subtitle {
+            text-align: center;
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 30px;
+            line-height: 1.5;
+            font-family: 'Pacifico', cursive;
+        }
+        
+        .team-description {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 12px;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            justify-content: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .team-member {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 20px 15px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .team-member:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(153, 51, 255, 0.1), rgba(102, 0, 204, 0.3));
+            z-index: -1;
+            border-radius: 16px;
+        }
+        
+        .team-member:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+        }
+        
+        .team-member:hover .member-image {
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .member-image {
+            font-size: 36px;
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(145deg, rgba(153, 51, 255, 0.4), rgba(102, 0, 204, 0.6));
+            border-radius: 50%;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .member-image:after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .team-member:hover .member-image:after {
+            opacity: 1;
+            top: -8px;
+            left: -8px;
+            right: -8px;
+            bottom: -8px;
+        }
+        
+        .member-image i {
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+            color: white;
+        }
+        
+        .member-name {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #fff;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+        
+        .member-age {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 8px;
+            font-weight: 400;
+        }
+        
+        .member-role {
+            font-size: 16px;
+            color: #64ffda;
+            margin-bottom: 12px;
+            font-weight: 500;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 8px;
+        }
+        
+        .member-role:after {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 2px;
+            background: rgba(100, 255, 218, 0.5);
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+        }
+        
+        .member-description {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.4;
+        }
+        
+        @media (max-width: 768px) {
+            .team-title {
+                font-size: 30px;
+            }
+            
+            .team-description {
+                font-size: 15px;
+                padding: 15px;
+                margin-bottom: 25px;
+            }
+            
+            .member-name {
+                font-size: 18px;
+            }
+            
+            .member-role {
+                font-size: 15px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .team-grid {
+                gap: 15px;
+            }
+            
+            .team-member {
+                padding: 15px 10px;
+            }
+            
+            .member-image {
+                width: 70px;
+                height: 70px;
+                font-size: 30px;
+                margin-bottom: 12px;
+            }
+            
+            .member-name {
+                font-size: 16px;
+                margin-bottom: 3px;
+            }
+            
+            .member-role {
+                font-size: 14px;
+                margin-bottom: 8px;
+                padding-bottom: 6px;
+            }
+            
+            .team-title {
+                font-size: 26px;
+                margin-bottom: 12px;
+            }
+            
+            .team-description {
+                font-size: 14px;
+                padding: 12px;
+                margin-bottom: 20px;
+            }
+            
+            .member-description {
+                font-size: 13px;
+                line-height: 1.3;
+            }
+            
+            .member-age {
+                font-size: 13px;
+                margin-bottom: 6px;
+            }
+        }
+        
+        /* Donate Section Styles */
+        .donate-section {
+            max-width: 900px;
+            margin: 40px auto 30px;
+            padding: 0 15px;
+        }
+        
+        .donate-container {
+            background: linear-gradient(145deg, rgba(153, 51, 255, 0.2), rgba(102, 0, 204, 0.4));
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3), 
+                        inset 0 2px 2px rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .donate-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 
+                        inset 0 2px 2px rgba(255, 255, 255, 0.2);
+        }
+        
+        .donate-title {
+            text-align: center;
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 25px;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            position: relative;
+            padding-bottom: 12px;
+            font-family: 'Fredoka One', cursive;
+        }
+        
+        .donate-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 2px;
+        }
+        
+        .donate-content {
+            display: flex;
+            align-items: flex-start;
+            gap: 25px;
+        }
+        
+        .donate-icon {
+            font-size: 60px;
+            color: #ff80ab;
+            flex-shrink: 0;
+            margin-top: 10px;
+            text-shadow: 0 0 15px rgba(255, 128, 171, 0.5);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        
+        .donate-text p {
+            font-size: 16px;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: 15px;
+        }
+        
+        .donate-list {
+            list-style: none;
+            margin: 0 0 20px 0;
+            padding: 0;
+        }
+        
+        .donate-list li {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .donate-list li i {
+            margin-right: 10px;
+            color: #64ffda;
+            font-size: 18px;
+            width: 25px;
+            text-align: center;
+        }
+        
+        .donate-button-container {
+            text-align: center;
+            margin-top: 25px;
+        }
+        
+        .donate-button {
+            background: linear-gradient(145deg, #ff80ab, #f06292);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 14px 30px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .donate-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(145deg, #f06292, #e91e63);
+        }
+        
+        .donate-button:active {
+            transform: translateY(1px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .donate-button i {
+            font-size: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .donate-content {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                gap: 15px;
+            }
+            
+            .donate-icon {
+                margin-bottom: 10px;
+            }
+            
+            .donate-title {
+                font-size: 28px;
+            }
+            
+            .donate-text p {
+                font-size: 15px;
+            }
+            
+            .donate-list {
+                display: inline-block;
+                text-align: left;
+            }
+            
+            .donate-button {
+                padding: 12px 25px;
+                font-size: 16px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .donate-container {
+                padding: 20px 15px;
+            }
+            
+            .donate-title {
+                font-size: 24px;
+                margin-bottom: 20px;
+            }
+            
+            .donate-text p {
+                font-size: 14px;
+            }
+            
+            .donate-list li {
+                font-size: 14px;
+                margin-bottom: 10px;
+            }
+            
+            .donate-button {
+                padding: 10px 20px;
+                font-size: 15px;
+            }
+        }
+        
+        /* Optimize performance with containment */
+        .features-section, .delivery-section, .team-section, .donate-section {
+            content-visibility: auto;
+            contain-intrinsic-size: 700px;
+        }
+        
+        /* Lazy loading animation */
+        .features-section, .delivery-section, .team-section, .donate-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        }
+        
+        .features-section.visible, .delivery-section.visible, .team-section.visible, .donate-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Reduce paint complexity for scrolling */
+        .stats-card, .feature-card, .team-member, .donate-container, .delivery-container {
+            transform: translateZ(0);
+            will-change: transform;
+        }
+        
+        /* Footer Styles */
+        .footer-section {
+            margin-top: 40px;
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px 20px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-logo {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .footer-site-name {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            font-family: 'Fredoka One', cursive;
+            color: #fff;
+        }
+        
+        .footer-tagline {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .footer-title {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #fff;
+            position: relative;
+            padding-bottom: 8px;
+        }
+        
+        .footer-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .footer-contact {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        
+        .contact-item i {
+            width: 20px;
+            margin-right: 10px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 3px;
+        }
+        
+        .contact-links {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .contact-item a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            transition: color 0.3s;
+            margin-bottom: 5px;
+        }
+        
+        .whatsapp-link {
+            font-size: 0.85em;
+            color: #25D366 !important;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .whatsapp-link i {
+            width: auto;
+            margin-right: 0;
+        }
+        
+        .contact-item a:hover {
+            color: #64ffda;
+        }
+        
+        .contact-item a:last-child {
+            margin-bottom: 0;
+        }
+        
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .footer-links ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+        
+        .footer-links a:hover {
+            color: #64ffda;
+            transform: translateX(5px);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+                gap: 20px;
+            }
+            
+            .footer-logo {
+                grid-column: span 2;
+                text-align: center;
+                margin-bottom: 20px;
+            }
+            
+            .footer-title:after {
+                left: 0;
+                right: 0;
+                margin: 0 auto;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-logo {
+                grid-column: span 1;
+            }
+            
+            .footer-contact, .footer-links {
+                text-align: center;
+            }
+            
+            .contact-item {
+                justify-content: center;
+            }
+            
+            .footer-container {
+                padding: 30px 15px 15px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <!-- Coming Soon Popup -->
-    <div class="popup-overlay" id="comingSoonPopup">
-        <div class="popup-content glass-card">
-            <div class="popup-close" id="closePopup">&times;</div>
-            <div class="popup-icon"><i class="fas fa-clock"></i></div>
-            <h2>Coming Soon!</h2>
-            <p>Our app is currently under development. We'll be launching on app stores very soon.</p>
-            <p>Stay tuned for updates!</p>
-            <button class="btn btn-primary" id="popupCloseBtn">Got it</button>
+    <div class="bubbles">
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+    </div>
+    
+    <header class="header">
+        <div class="logo-container">
+            <div class="site-name">Grozily</div>
+        </div>
+        
+        <nav class="navbar">
+            <ul class="nav-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="#about-section">About</a></li>
+                <li><a href="#team-section">Team</a></li>
+                <li><a href="#customer-support">Customer Support</a></li>
+                <li><a href="policies.html">Policies</a></li>
+                <li><a href="donate.html">Donate</a></li>
+            </ul>
+            
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </nav>
+    </header>
+
+    <div class="main-content">
+    <div class="stats-container">
+            <div class="stats-card loading" id="stats-card">
+                <div class="stat-item">
+                    <i class="fas fa-users stat-icon users-icon"></i>
+                    <div class="stat-count" id="users-count">
+                        <div class="loading-spinner" id="users-spinner"></div>
+                        <span class="count-value" style="display: none;">0</span>
+            </div>
+                    <div class="stat-label">Users</div>
+        </div>
+        
+                <div class="stat-item">
+                    <i class="fas fa-store stat-icon vendors-icon"></i>
+                    <div class="stat-count" id="vendors-count">
+                        <div class="loading-spinner" id="vendors-spinner"></div>
+                        <span class="count-value" style="display: none;">0</span>
+                    </div>
+                    <div class="stat-label">Vendors</div>
+                </div>
+                
+                <div class="stat-item">
+                    <i class="fas fa-chart-line stat-icon total-icon"></i>
+                    <div class="stat-count" id="total-count">
+                        <div class="loading-spinner" id="total-spinner"></div>
+                        <span class="count-value" style="display: none;">0</span>
+                    </div>
+                    <div class="stat-label">Total</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="description-container">
+            <h2 class="description-title">Grozily</h2>
+            <p class="description-subtitle">Kashmir's Own Hyperlocal Grocery Delivery Platform</p>
+            <p class="description-text" id="about-section">
+                Grozily is a platform built specifically for Kashmir to connect customers with their nearest local kirana shops and general stores. It is a simple, community-focused solution for ordering daily essentials and getting them delivered to your doorstep with ease. No big chains, no warehouses — just the local shops you already know and trust, now available online.
+            </p>
+            
+            <div class="app-buttons">
+                <div class="app-button" id="play-store-button">
+                    <i class="fab fa-google-play"></i>
+                    <div class="app-button-text">
+                        <span class="small-text">GET IT ON</span>
+                        <span class="big-text">Google Play</span>
+                    </div>
+                </div>
+                
+                <div class="app-button" id="app-store-button">
+                    <i class="fab fa-apple"></i>
+                    <div class="app-button-text">
+                        <span class="small-text">DOWNLOAD ON THE</span>
+                        <span class="big-text">App Store</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="features-section">
+            <h2 class="features-title">What Makes Grozily Different?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon local-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h3 class="feature-title">100% Local</h3>
+                    <p class="feature-text">
+                        Grozily only features verified shops from your area. You are not buying from some unknown supplier far away — you're supporting the same local vendors you've been buying from for years, now with added convenience.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon middlemen-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h3 class="feature-title">No Middlemen</h3>
+                    <p class="feature-text">
+                        We don't act as a reseller or mark up prices. The shopkeeper receives your order directly and manages the delivery. You get transparent pricing and a more direct, efficient service.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon lightweight-icon">
+                        <i class="fas fa-feather-alt"></i>
+                    </div>
+                    <h3 class="feature-title">Simple and Lightweight</h3>
+                    <p class="feature-text">
+                        Our platform is designed to work smoothly, even in areas with slow internet. It uses a clean, minimal interface that loads fast and keeps things easy to use for everyone — young or old.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon vendor-icon">
+                <i class="fas fa-store"></i>
+            </div>
+                    <h3 class="feature-title">Vendor-Friendly</h3>
+                    <p class="feature-text">
+                        While most platforms take large commissions, Grozily charges vendors only a 5% platform fee. This allows shopkeepers to maintain fair prices for customers and still earn more. Our goal is to support local business, not take over it.
+                    </p>
+                </div>
         </div>
     </div>
     
-    <!-- Bubble particles -->
-    <div class="bubbles" aria-hidden="true"></div>
-    
-    <div class="container">
-        <!-- Hero Section -->
-        <section class="hero">
-            <div class="hero-content">
-                <h1 class="fade-in">Welcome to Grozily</h1>
-                <p class="fade-in delay-1">Kashmir's first hyperlocal grocery delivery platform—simple, fast, and built for the people by one of their own.</p>
-                
-                <div class="app-buttons fade-in delay-2">
-                    <a href="#" class="btn btn-primary store-btn" data-store="play"><i class="fab fa-google-play"></i> Get on Play Store</a>
-                    <a href="#" class="btn btn-secondary store-btn" data-store="apple"><i class="fab fa-apple"></i> Get on App Store</a>
+        <div class="delivery-section">
+            <div class="delivery-container">
+                <h2 class="delivery-title">Deliver and Earn Locally</h2>
+                <div class="delivery-content">
+                    <div class="delivery-icon">
+                        <i class="fas fa-walking"></i>
+                    </div>
+                    <div class="delivery-text">
+                        <p>
+                            Grozily is not just for shopping. It's also an opportunity for individuals to earn in their free time. We allow locals to deliver groceries within their own neighborhoods. No bike or vehicle is required — you can walk, cycle, or use any available mode of transport.
+                        </p>
+                        <p>
+                            There is no formal hiring process or contract. If you have a smartphone and are ready to work a few hours a day, you can start delivering and earning with Grozily.
+                        </p>
+                        <p>
+                            We aim to create job opportunities in small communities, support students, and help anyone looking for extra income.
+                        </p>
+                    </div>
                 </div>
             </div>
+        </div>
+        
+        <!-- Team Section -->
+        <div class="team-section" id="team-section">
+            <h2 class="team-title">Meet Our Team</h2>
+            <p class="team-description">The minds behind Grozily are a group of innovative thinkers dedicated to serving the local community. All team members were students at DPS Budgam.</p>
             
-            <!-- Phone Slider in Hero -->
-            <div class="hero-phone-slider">
-                <div class="phone-container active" id="phone-container">
-                    <div class="phone">
-                        <div class="phone-screen">
-                            <!-- Preload images directly in the markup to ensure first image loads properly -->
-                            <img src="preview2.jpg" alt="Grozily App Preview" style="display: none;">
-                            <img src="preview1.jpg" alt="Grozily App Preview" style="display: none;">
-                            <img src="preview3.jpg" alt="Grozily App Preview" style="display: none;">
-                            
-                            <div class="screen-image-container active" data-screen="phone-2-screen">
-                                <img src="preview2.jpg" alt="Grozily App Preview">
-                            </div>
-                            <div class="screen-image-container" data-screen="phone-1-screen">
-                                <img src="preview1.jpg" alt="Grozily App Preview">
-                            </div>
-                            <div class="screen-image-container" data-screen="phone-3-screen">
-                                <img src="preview3.jpg" alt="Grozily App Preview">
-                            </div>
+            <div class="team-grid">
+                <div class="team-member">
+                    <div class="member-image">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <h3 class="member-name">Muhammad Izhan</h3>
+                    <p class="member-age">18 years old</p>
+                    <p class="member-role">Founder & COO</p>
+                    <p class="member-description">App Developer and Tech Handler</p>
+                </div>
+                
+                <div class="team-member">
+                    <div class="member-image">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="member-name">Shah Zaid Bin Khalid</h3>
+                    <p class="member-age">19 years old</p>
+                    <p class="member-role">Co-Founder & CFO</p>
+                    <p class="member-description">Finance Monitor and Analysis</p>
+                </div>
+                
+                <div class="team-member">
+                    <div class="member-image">
+                        <i class="fas fa-bullhorn"></i>
+                    </div>
+                    <h3 class="member-name">Mohammad Minaam</h3>
+                    <p class="member-age">18 years old</p>
+                    <p class="member-role">Co-Founder & CMO</p>
+                    <p class="member-description">Social Media Manager and Marketing</p>
+                </div>
+                
+                <div class="team-member">
+                    <div class="member-image">
+                        <i class="fas fa-paint-brush"></i>
+                    </div>
+                    <h3 class="member-name">Hamees Omar Wani</h3>
+                    <p class="member-age">18 years old</p>
+                    <p class="member-role">Co-Founder & CCO</p>
+                    <p class="member-description">Graphic Designer and On-Ground Worker</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Donate Section -->
+        <div class="donate-section">
+            <div class="donate-container">
+                <h2 class="donate-title">Donate to Our Cause</h2>
+                <div class="donate-content">
+                    <div class="donate-icon">
+                        <i class="fas fa-hand-holding-heart"></i>
+                    </div>
+                    <div class="donate-text">
+                        <p>Grozily is a community initiative that needs your support to grow. Your contributions will help us with:</p>
+                        <ul class="donate-list">
+                            <li><i class="fas fa-store"></i> Vendor onboarding and training local shopkeepers</li>
+                            <li><i class="fas fa-mobile-alt"></i> Improving our app and platform for better user experience</li>
+                            <li><i class="fas fa-bicycle"></i> Supporting our local delivery network</li>
+                            <li><i class="fas fa-users"></i> Community awareness programs about digital grocery shopping</li>
+                        </ul>
+                        <p>Even a small contribution can make a big difference in bringing our local shops online and making daily essentials more accessible to everyone in Kashmir.</p>
+                        <div class="donate-button-container">
+                            <a href="donate.html" class="donate-button" id="donate-button">
+                                <i class="fas fa-donate"></i> Donate Now
+                            </a>
                         </div>
                     </div>
                 </div>
-                <div class="slider-controls">
-                    <span class="dot active" data-screen="phone-2-screen"></span>
-                    <span class="dot" data-screen="phone-1-screen"></span>
-                    <span class="dot" data-screen="phone-3-screen"></span>
-                </div>
             </div>
-        </section>
-
-        <!-- Problem Section -->
-        <section class="problem glass-card">
-            <h2>The Problem</h2>
-            <p>In Kashmir, access to groceries isn't always easy. Shops are scattered, deliveries are inconsistent, and many stores aren't digitally connected at all. Customers often wait long hours or even days for basic household needs. Shopkeepers, too, lose customers due to lack of digital presence.</p>
-        </section>
-
-        <!-- Solution Section -->
-        <section class="solution glass-card">
-            <h2>The Solution</h2>
-            <p>Grozily connects your local kirana shops and marts to a modern, simple-to-use app.</p>
-            
-            <div class="process-steps">
-                <div class="step">
-                    <div class="step-icon"><i class="fas fa-search"></i></div>
-                    <h3>You browse</h3>
-                    <p>Browse groceries from local stores near you</p>
-                </div>
-                <div class="step-arrow">→</div>
-                <div class="step">
-                    <div class="step-icon"><i class="fas fa-shopping-cart"></i></div>
-                    <h3>You order</h3>
-                    <p>Add items to cart and place your order</p>
-                </div>
-                <div class="step-arrow">→</div>
-                <div class="step">
-                    <div class="step-icon"><i class="fas fa-truck"></i></div>
-                    <h3>Shop delivers</h3>
-                    <p>The nearest shop delivers to your doorstep</p>
-                </div>
-            </div>
-            
-            <p class="tagline">That's it. No middlemen. No inflated prices.</p>
-            <p>Vendors register with us and upload their products. You order, they deliver. Quick, local, and reliable.</p>
-        </section>
-
-        <!-- Features Section -->
-        <section class="features glass-card">
-            <h2>What Makes Grozily Different</h2>
-            <p>While big platforms dominate cities, Grozily is rooted in Kashmir's reality.</p>
-            
-            <div class="features-grid">
-                <div class="feature">
-                    <div class="feature-icon"><i class="fas fa-map-marker-alt"></i></div>
-                    <h3>Hyperlocal focus</h3>
-                    <p>Only your local, trusted stores</p>
-                </div>
-                <div class="feature">
-                    <div class="feature-icon"><i class="fas fa-store"></i></div>
-                    <h3>Real-time vendor control</h3>
-                    <p>Vendors manage their own listings</p>
-                </div>
-                <div class="feature">
-                    <div class="feature-icon"><i class="fas fa-bolt"></i></div>
-                    <h3>Light & fast</h3>
-                    <p>Optimized for even slow networks</p>
-                </div>
-                <div class="feature">
-                    <div class="feature-icon"><i class="fas fa-percent"></i></div>
-                    <h3>Low platform fees</h3>
-                    <p>Just 5%, so vendors earn more</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- About Section -->
-        <section class="about glass-card">
-            <h2>About the Developer</h2>
-            <p>I'm an 18-year-old developer from Kashmir, working to make local shopping easier and smarter through technology.</p>
-            <p>Growing up in Srinagar, I saw how disconnected our local businesses were from the digital revolution happening elsewhere. That's why I started Grozily — to bridge this gap and create something that truly works for our community.</p>
-            <p>With no external funding or large team, I'm building this platform step by step — coding late nights, meeting with shopkeepers personally, and solving problems as they come.</p>
-            <p>This is just the beginning, and I'm learning and building as I go — hoping to make a small difference in Kashmir's digital landscape, one store at a time.</p>
-        </section>
-
-        <!-- Comparison Section -->
-        <section class="comparison glass-card">
-            <h2>Why Grozily is Different — and Has No Real Competition</h2>
-            <p class="subtitle">Big delivery apps are broken by design...</p>
-            
-            <p>The current food delivery marketplace is dominated by large platforms that prioritize their own profits over the needs of local communities. These platforms charge vendors excessive fees (up to 30-35% per order), create complicated onboarding processes, and often limit service availability to "premium zones" only.</p>
-            
-            <h3>Grozily takes a fundamentally different approach:</h3>
-            <ul>
-                <li>Focus on local stores rather than chains, giving visibility to small businesses that are typically overlooked</li>
-                <li>Minimal fees for vendors to ensure fair compensation and sustainability, with no complicated onboarding procedures</li>
-                <li>Direct access for customers to products they need, with transparent pricing and no hidden fees</li>
-                <li>Optimized delivery focusing on clusters rather than "premium zones," serving communities that larger platforms ignore</li>
-            </ul>
-            
-            <h3>With Grozily, you'll never see:</h3>
-            <ul class="never-list">
-                <li><i class="fas fa-times"></i> Overpriced aggregators</li>
-                <li><i class="fas fa-times"></i> Complicated vendor setup</li>
-                <li><i class="fas fa-times"></i> "Premium-only" zones</li>
-            </ul>
-            
-            <p>Grozily is designed from the ground up to be a fair platform that prioritizes community needs over corporate profits, making it a truly unique solution in the delivery space.</p>
-        </section>
-
-        <!-- Support Section -->
-        <section class="support glass-card">
-            <h2>Support the Mission</h2>
-            <p>Grozily is fully bootstrapped. Every feature, design, and improvement is built with love and long nights.</p>
-            <p>If you believe in empowering local businesses and want to support the mission, consider donating:</p>
-            
-            <a href="#" class="btn btn-primary donate-btn">Donate Now</a>
-            
-            <h3>Your donation helps us:</h3>
-            <ul>
-                <li>Onboard more vendors</li>
-                <li>Run local awareness campaigns</li>
-                <li>Improve delivery reach and speed</li>
-            </ul>
-        </section>
+        </div>
     </div>
+    
+    <!-- Footer Section -->
+    <footer class="footer-section" id="customer-support">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <div class="footer-site-name">Grozily</div>
+                    <p class="footer-tagline">Kashmir's Own Hyperlocal Grocery Delivery Platform</p>
+                </div>
+                
+                <div class="footer-contact">
+                    <h3 class="footer-title">Customer Support</h3>
+                    <div class="contact-item">
+                        <i class="fas fa-phone-alt"></i>
+                        <div class="contact-links">
+                            <a href="tel:+918082986062">+91 8082986062</a>
+                            <a href="https://wa.me/918082986062" class="whatsapp-link" target="_blank">
+                                <i class="fab fa-whatsapp"></i> WhatsApp
+                            </a>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone-alt"></i>
+                        <div class="contact-links">
+                            <a href="tel:+919596153432">+91 9596153432</a>
+                            <a href="https://wa.me/919596153432" class="whatsapp-link" target="_blank">
+                                <i class="fab fa-whatsapp"></i> WhatsApp
+                            </a>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <a href="mailto:grozily.shop@gmail.com">grozily.shop@gmail.com</a>
+                    </div>
+                </div>
+                
+                <div class="footer-links">
+                    <h3 class="footer-title">Quick Links</h3>
+                    <ul>
+                        <li><a href="#" id="about-link">About Us</a></li>
+                        <li><a href="policies.html">Policies</a></li>
+                        <li><a href="donate.html">Donate</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2023 Grozily. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Popup -->
+    <div class="popup-overlay" id="popup">
+        <div class="popup-content">
+            <div class="popup-close" id="popup-close">&times;</div>
+            <div class="popup-icon"><i class="fas fa-clock"></i></div>
+            <h3 class="popup-title">Coming Soon!</h3>
+            <p class="popup-message">Our mobile app is currently under development and will be available for download soon. Stay tuned for updates!</p>
+            <button class="popup-button" id="popup-close-button">Close</button>
+        </div>
+    </div>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    
+    <script>
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyCtbwkusKvCEYNCHUytaF4tUISNywsADiM",
+            authDomain: "grozily2.firebaseapp.com",
+            databaseURL: "https://grozily2-default-rtdb.firebaseio.com",
+            projectId: "grozily2",
+            storageBucket: "grozily2.appspot.com",
+            messagingSenderId: "665300145710",
+            appId: "1:665300145710:web:4f8d866e07fc902b1131bf",
+            measurementId: "G-83S7ZWXEB9"
+        };
+        
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        
+        // DOM Elements - cache DOM queries for better performance
+        const usersCountElement = document.querySelector('#users-count .count-value');
+        const vendorsCountElement = document.querySelector('#vendors-count .count-value');
+        const totalCountElement = document.querySelector('#total-count .count-value');
+        const usersSpinner = document.getElementById('users-spinner');
+        const vendorsSpinner = document.getElementById('vendors-spinner');
+        const totalSpinner = document.getElementById('total-spinner');
+        
+        // Mobile menu functionality with passive event listeners for better performance
+        const hamburger = document.querySelector(".hamburger");
+        const navLinks = document.querySelector(".nav-links");
 
-    <script src="script.js"></script>
+        hamburger.addEventListener("click", () => {
+            hamburger.classList.toggle("active");
+            navLinks.classList.toggle("active");
+        }, {passive: true});
+
+        document.querySelectorAll(".nav-links a").forEach(link => 
+            link.addEventListener("click", () => {
+                hamburger.classList.remove("active");
+                navLinks.classList.remove("active");
+            }, {passive: true})
+        );
+        
+        // Simple popup functionality
+        const popup = document.getElementById('popup');
+        const playStoreButton = document.getElementById('play-store-button');
+        const appStoreButton = document.getElementById('app-store-button');
+        const closeButton = document.getElementById('popup-close-button');
+        const closeX = document.getElementById('popup-close');
+        
+        function showPopup() {
+            popup.classList.add('show');
+        }
+        
+        function hidePopup() {
+            popup.classList.remove('show');
+        }
+        
+        playStoreButton.addEventListener('click', showPopup, {passive: true});
+        appStoreButton.addEventListener('click', showPopup, {passive: true});
+        closeButton.addEventListener('click', hidePopup, {passive: true});
+        closeX.addEventListener('click', hidePopup, {passive: true});
+        
+        // Close when clicking outside popup content
+        popup.addEventListener('click', function(e) {
+            if (e.target === popup) {
+                hidePopup();
+            }
+        }, {passive: true});
+        
+        // Optimized counter animation using requestAnimationFrame
+        function animateCounter(element, startValue, endValue, duration) {
+            if (!element) return;
+            element.style.display = 'block';
+            let startTime = null;
+            
+            function animate(currentTime) {
+                if (!startTime) startTime = currentTime;
+                const progress = Math.min((currentTime - startTime) / duration, 1);
+                const value = Math.floor(startValue + progress * (endValue - startValue));
+                element.textContent = value;
+                
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                }
+            }
+            
+            requestAnimationFrame(animate);
+        }
+        
+        // State to track data loading
+        let userData = null;
+        let vendorData = null;
+        
+        // Function to check if all data is loaded
+        function checkDataLoaded() {
+            if (userData !== null && vendorData !== null) {
+                // All data loaded, now show and animate counters
+                setTimeout(() => {
+                    // Hide spinners
+                    usersSpinner.classList.add('hide-spinner');
+                    vendorsSpinner.classList.add('hide-spinner');
+                    totalSpinner.classList.add('hide-spinner');
+                    
+                    // Show and animate counters
+                    animateCounter(usersCountElement, 0, userData, 800);
+                    animateCounter(vendorsCountElement, 0, vendorData, 800);
+                    animateCounter(totalCountElement, 0, userData + vendorData, 800);
+                }, 100);
+            }
+        }
+        
+        // Listen for user count changes - use once instead of on for initial load
+        firebase.database().ref('users').once('value', (snapshot) => {
+            userData = snapshot.exists() ? snapshot.numChildren() : 0;
+            checkDataLoaded();
+        });
+        
+        // Listen for vendor count changes - use once instead of on for initial load
+        firebase.database().ref('vendors').once('value', (snapshot) => {
+            vendorData = snapshot.exists() ? snapshot.numChildren() : 0;
+            checkDataLoaded();
+        });
+
+        // After initial load, set up real-time listeners with throttling
+        let lastUpdate = Date.now();
+        const updateThreshold = 5000; // 5 seconds minimum between updates
+
+        firebase.database().ref('users').on('value', (snapshot) => {
+            const now = Date.now();
+            if (now - lastUpdate > updateThreshold) {
+                userData = snapshot.exists() ? snapshot.numChildren() : 0;
+                updateCounters();
+                lastUpdate = now;
+            }
+        });
+
+        firebase.database().ref('vendors').on('value', (snapshot) => {
+            const now = Date.now();
+            if (now - lastUpdate > updateThreshold) {
+                vendorData = snapshot.exists() ? snapshot.numChildren() : 0;
+                updateCounters();
+                lastUpdate = now;
+            }
+        });
+
+        function updateCounters() {
+            if (userData !== null && vendorData !== null) {
+                usersCountElement.textContent = userData;
+                vendorsCountElement.textContent = vendorData;
+                totalCountElement.textContent = userData + vendorData;
+            }
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('.nav-links a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                // Close mobile menu if open
+                hamburger.classList.remove("active");
+                navLinks.classList.remove("active");
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') {
+                    // Scroll to top for "Home" link
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                } else {
+                    // Scroll to target section for other links
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        const headerOffset = 85; // Account for fixed header
+                        const elementPosition = targetElement.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                        
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            }, {passive: false});
+        });
+
+        // Lazy load offscreen elements
+        document.addEventListener('DOMContentLoaded', function() {
+            // Use Intersection Observer for lazy loading
+            if ('IntersectionObserver' in window) {
+                const sections = document.querySelectorAll('.features-section, .delivery-section, .team-section, .donate-section');
+                
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, {
+                    rootMargin: '0px 0px 100px 0px'
+                });
+                
+                sections.forEach(section => {
+                    observer.observe(section);
+                });
+            }
+            
+            // Handle sticky header appearance
+            const header = document.querySelector('.header');
+            const scrollThreshold = 50;
+            
+            function updateHeaderAppearance() {
+                if (window.scrollY > scrollThreshold) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            }
+            
+            // Initial check
+            updateHeaderAppearance();
+            
+            // Listen for scroll
+            window.addEventListener('scroll', updateHeaderAppearance, { passive: true });
+        }, {passive: true});
+    </script>
 </body>
-</html> 
+</html>

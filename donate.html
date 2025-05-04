@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donate to Grozily</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="icon" href="logo.jpg" type="image/jpeg">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Fredoka+One&family=Pacifico&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+            height: 100%;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #9933ff 0%, #6600cc 100%) fixed;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            will-change: transform;
+            -webkit-overflow-scrolling: touch;
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #9933ff 0%, #6600cc 100%);
+            z-index: -2;
+        }
+        
+        .bubbles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        
+        .bubble {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.05);
+            will-change: transform;
+            transform: translateZ(0);
+            animation: float 25s linear infinite;
+        }
+        
+        .bubble:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            left: 10%;
+            animation-duration: 25s;
+            animation-delay: 0s;
+            opacity: 0.4;
+        }
+        
+        .bubble:nth-child(2) {
+            width: 120px;
+            height: 120px;
+            left: 25%;
+            animation-duration: 30s;
+            animation-delay: 1s;
+            opacity: 0.2;
+        }
+        
+        .bubble:nth-child(3) {
+            width: 50px;
+            height: 50px;
+            left: 40%;
+            animation-duration: 20s;
+            animation-delay: 5s;
+            opacity: 0.3;
+        }
+        
+        .bubble:nth-child(4) {
+            width: 150px;
+            height: 150px;
+            left: 70%;
+            animation-duration: 35s;
+            animation-delay: 0s;
+            opacity: 0.15;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+            }
+            100% {
+                transform: translateY(-20vh) rotate(360deg);
+            }
+        }
+        
+        .header {
+            text-align: center;
+            padding: 30px 20px;
+            position: relative;
+        }
+        
+        .back-btn {
+            position: absolute;
+            left: 20px;
+            top: 30px;
+            color: white;
+            font-size: 24px;
+            text-decoration: none;
+            transition: transform 0.3s;
+        }
+        
+        .back-btn:hover {
+            transform: translateX(-5px);
+        }
+        
+        .site-name {
+            font-size: 32px;
+            font-weight: 700;
+            color: white;
+            position: relative;
+            letter-spacing: 0.5px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            font-family: 'Fredoka One', cursive;
+            margin-bottom: 5px;
+        }
+        
+        .donate-title {
+            font-family: 'Pacifico', cursive;
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .main-content {
+            flex: 1;
+            padding: 0 20px 40px;
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        .donation-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+        }
+        
+        .card-title {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #fff;
+            text-align: center;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .btn-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(145deg, #ff80ab, #f06292);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 14px 30px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(145deg, #f06292, #e91e63);
+        }
+        
+        .payment-separator {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .payment-separator::before,
+        .payment-separator::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .payment-separator span {
+            padding: 0 10px;
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .payment-options {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+        
+        .upi-details {
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        
+        .upi-id {
+            font-size: 18px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 12px 15px;
+            border-radius: 8px;
+            display: inline-block;
+            margin: 15px 0;
+        }
+        
+        .qr-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .qr-code {
+            max-width: 200px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            border: 5px solid white;
+            background: white;
+        }
+        
+        .complete-payment {
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .success-message {
+            text-align: center;
+            display: none;
+            animation: fadeIn 0.8s;
+            padding: 40px 30px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .success-message::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
+            z-index: -1;
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #f44336;
+            border-radius: 50%;
+            animation: confetti-fall 4s ease-out forwards;
+            z-index: -1;
+        }
+        
+        .confetti:nth-child(2n) {
+            background-color: #2196f3;
+            width: 8px;
+            height: 8px;
+            animation-duration: 3.5s;
+            animation-delay: 0.2s;
+        }
+        
+        .confetti:nth-child(3n) {
+            background-color: #ffeb3b;
+            width: 12px;
+            height: 12px;
+            animation-duration: 4.5s;
+            animation-delay: 0.5s;
+        }
+        
+        .confetti:nth-child(4n) {
+            background-color: #4caf50;
+            width: 7px;
+            height: 7px;
+            animation-duration: 5s;
+            animation-delay: 0.7s;
+        }
+        
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(500px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        .success-icon {
+            font-size: 70px;
+            color: #4CAF50;
+            margin-bottom: 25px;
+            text-shadow: 0 2px 10px rgba(76, 175, 80, 0.5);
+            animation: pulse-success 2s infinite;
+            display: inline-block;
+        }
+        
+        @keyframes pulse-success {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        
+        .success-title {
+            font-size: 34px;
+            margin-bottom: 20px;
+            color: white;
+            font-family: 'Fredoka One', cursive;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(to right, #fff, #e0e0ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .success-text {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+        
+        .success-highlight {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin: 25px 0;
+            display: inline-block;
+            font-weight: 500;
+            border: 1px dashed rgba(255, 255, 255, 0.3);
+        }
+        
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .home-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 25px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            transition: all 0.3s;
+            font-weight: 500;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .home-link:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .whatsapp-notify {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 25px;
+            background: linear-gradient(145deg, #25D366, #128C7E);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            transition: all 0.3s;
+            font-weight: 500;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+            cursor: pointer;
+        }
+        
+        .whatsapp-notify:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6);
+            background: linear-gradient(145deg, #1fbd5a, #0e7d70);
+        }
+        
+        .whatsapp-notify:active {
+            transform: translateY(1px);
+        }
+        
+        @media (max-width: 768px) {
+            .site-name {
+                font-size: 28px;
+            }
+            
+            .donate-title {
+                font-size: 20px;
+            }
+            
+            .donation-card, .payment-options {
+                padding: 20px;
+            }
+            
+            .btn-primary {
+                padding: 12px 25px;
+                font-size: 16px;
+            }
+            
+            .card-title {
+                font-size: 20px;
+            }
+            
+            .upi-id {
+                font-size: 16px;
+                padding: 10px;
+                word-break: break-all;
+            }
+            
+            .back-btn {
+                font-size: 20px;
+            }
+            
+            .success-title {
+                font-size: 28px;
+            }
+            
+            .success-text {
+                font-size: 16px;
+            }
+            
+            .success-highlight {
+                padding: 12px 15px;
+                margin: 20px 0;
+            }
+            
+            .button-group {
+                gap: 10px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .site-name {
+                font-size: 24px;
+            }
+            
+            .donate-title {
+                font-size: 18px;
+            }
+            
+            .main-content {
+                padding: 0 15px 30px;
+            }
+            
+            .donation-card, .payment-options, .success-message {
+                padding: 20px 15px;
+            }
+            
+            .qr-code {
+                max-width: 150px;
+            }
+            
+            .card-title {
+                font-size: 18px;
+            }
+            
+            .success-title {
+                font-size: 22px;
+            }
+            
+            .success-text {
+                font-size: 14px;
+                line-height: 1.5;
+            }
+            
+            .success-highlight {
+                font-size: 14px;
+                padding: 10px;
+            }
+            
+            .success-icon {
+                font-size: 50px;
+                margin-bottom: 15px;
+            }
+            
+            .button-group {
+                flex-direction: column;
+                width: 100%;
+                gap: 10px;
+            }
+            
+            .home-link, .whatsapp-notify {
+                width: 100%;
+                justify-content: center;
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+            
+            .confetti {
+                display: none;
+            }
+            
+            .confetti:nth-child(1),
+            .confetti:nth-child(2),
+            .confetti:nth-child(3),
+            .confetti:nth-child(4),
+            .confetti:nth-child(5) {
+                display: block;
+            }
+        }
+        
+        /* Create dynamic confetti animation on success */
+        .success-message.show-confetti::after {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            width: 8px;
+            height: 16px;
+            background: #ff4081;
+            border-radius: 4px;
+            animation: shoot-confetti 0.5s ease-out forwards;
+            transform-origin: bottom center;
+        }
+        
+        @keyframes shoot-confetti {
+            0% {
+                transform: translateY(0) scale(1);
+            }
+            100% {
+                transform: translateY(-40px) scale(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bubbles">
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+    </div>
+
+    <div class="header">
+        <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+        <div class="site-name">Grozily</div>
+        <div class="donate-title">Support Our Mission</div>
+    </div>
+
+    <div class="main-content">
+        <div class="donation-form" id="donationForm">
+            <div class="donation-card">
+                <h2 class="card-title">Donation Details</h2>
+                <div class="form-group">
+                    <label for="name">Your Name</label>
+                    <input type="text" id="name" class="form-control" placeholder="Enter your name" required>
+                </div>
+                <div class="form-group">
+                    <label for="amount">Donation Amount (₹)</label>
+                    <input type="number" id="amount" class="form-control" placeholder="Enter amount" min="1" required>
+                </div>
+                <div class="btn-container">
+                    <button type="button" class="btn-primary" id="proceedBtn">
+                        <i class="fas fa-money-bill-wave"></i> Pay with UPI
+                    </button>
+                </div>
+            </div>
+            
+            <div class="payment-separator">
+                <span>After Payment</span>
+            </div>
+            
+            <div class="payment-options">
+                <h2 class="card-title">Payment Confirmation</h2>
+                <div class="upi-details">
+                    <p>If you've made the payment using UPI ID:</p>
+                    <div class="upi-id">mohammadizhan710@oksbi</div>
+                </div>
+                
+                <div class="qr-container">
+                    <p>Or if you've scanned this QR code:</p>
+                    <img src="frame.png" alt="UPI QR Code" class="qr-code">
+                </div>
+                
+                <div class="complete-payment">
+                    <button type="button" class="btn-primary" id="completeBtn">
+                        <i class="fas fa-check-circle"></i> Confirm Payment
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="success-message" id="successMessage">
+            <!-- Confetti animation elements -->
+            <div class="confetti"></div>
+            <div class="confetti"></div>
+            <div class="confetti"></div>
+            <div class="confetti"></div>
+            <div class="confetti"></div>
+            <div class="confetti"></div>
+            <div class="confetti"></div>
+            <div class="confetti"></div>
+            <div class="confetti"></div>
+            <div class="confetti"></div>
+            
+            <div class="success-icon">
+                <i class="fas fa-heart"></i>
+            </div>
+            <h2 class="success-title">Thank You for Your Generosity!</h2>
+            <div class="success-highlight">
+                Payment confirmation received! Your contribution means the world to us.
+            </div>
+            
+            <p class="success-text">Your donation helps us create job opportunities, support local businesses, and bring convenience to countless households in Kashmir.</p>
+            
+            <div class="button-group">
+                <a href="index.html" class="home-link">
+                    <i class="fas fa-home"></i> Return to Home
+                </a>
+                <button id="whatsappNotify" class="whatsapp-notify">
+                    <i class="fab fa-whatsapp"></i> Notify via WhatsApp
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const proceedBtn = document.getElementById('proceedBtn');
+            const completeBtn = document.getElementById('completeBtn');
+            const donationForm = document.getElementById('donationForm');
+            const successMessage = document.getElementById('successMessage');
+            const nameInput = document.getElementById('name');
+            const amountInput = document.getElementById('amount');
+            
+            // Check if user is returning from UPI payment
+            const checkIfReturningFromPayment = function() {
+                // Check for URL parameter or localStorage flag
+                const hasInitiatedPayment = localStorage.getItem('grozily_payment_initiated');
+                if (hasInitiatedPayment) {
+                    // Get saved payment details
+                    const savedName = localStorage.getItem('grozily_donor_name');
+                    const savedAmount = localStorage.getItem('grozily_donation_amount');
+                    
+                    // Autofill the form if values exist
+                    if (savedName) nameInput.value = savedName;
+                    if (savedAmount) amountInput.value = savedAmount;
+                    
+                    // Scroll to confirmation section
+                    setTimeout(function() {
+                        document.querySelector('.payment-options').scrollIntoView({ behavior: 'smooth' });
+                    }, 500);
+                }
+            };
+            
+            // Create dynamic confetti animation
+            function createConfetti() {
+                const confettiElements = document.querySelectorAll('.confetti');
+                const colors = ['#f44336', '#2196f3', '#ffeb3b', '#4caf50', '#e91e63', '#9c27b0', '#ff9800'];
+                
+                confettiElements.forEach((confetti, index) => {
+                    const left = Math.random() * 100;
+                    const animationDuration = 3 + Math.random() * 3;
+                    const animationDelay = Math.random() * 0.5;
+                    const color = colors[Math.floor(Math.random() * colors.length)];
+                    
+                    confetti.style.left = `${left}%`;
+                    confetti.style.backgroundColor = color;
+                    confetti.style.animationDuration = `${animationDuration}s`;
+                    confetti.style.animationDelay = `${animationDelay}s`;
+                });
+                
+                // Add show-confetti class for additional effects
+                successMessage.classList.add('show-confetti');
+            }
+            
+            // Proceed button redirects to UPI payment
+            proceedBtn.addEventListener('click', function() {
+                // Validate form
+                if (!nameInput.value.trim()) {
+                    alert('Please enter your name');
+                    nameInput.focus();
+                    return;
+                }
+                
+                if (!amountInput.value || amountInput.value < 1) {
+                    alert('Please enter a valid donation amount');
+                    amountInput.focus();
+                    return;
+                }
+                
+                const name = nameInput.value.trim();
+                const amount = amountInput.value;
+                
+                // Save details to localStorage for when user returns
+                localStorage.setItem('grozily_payment_initiated', 'true');
+                localStorage.setItem('grozily_donor_name', name);
+                localStorage.setItem('grozily_donation_amount', amount);
+                
+                // Create UPI deep link with correct ID format
+                const upiId = "mohammadizhan710@oksbi";
+                const upiLink = `upi://pay?pa=${upiId}&pn=Grozily&tn=Donation from ${encodeURIComponent(name)}&am=${amount}&cu=INR`;
+                
+                // Redirect to UPI app
+                window.location.href = upiLink;
+            });
+            
+            // Complete payment button just shows the confirmation
+            completeBtn.addEventListener('click', function() {
+                // Validate form again
+                if (!nameInput.value.trim() || !amountInput.value || amountInput.value < 1) {
+                    alert('Please fill in all the required details first');
+                    return;
+                }
+                
+                showSuccessMessage();
+            });
+            
+            function showSuccessMessage() {
+                const name = nameInput.value.trim();
+                const amount = amountInput.value;
+                
+                // Show success message
+                donationForm.style.display = 'none';
+                successMessage.style.display = 'block';
+                
+                // Clear localStorage flags
+                localStorage.removeItem('grozily_payment_initiated');
+                
+                // Initialize confetti
+                createConfetti();
+                
+                // Prepare WhatsApp message with donation details
+                const message = `Hello, I've made a donation to Grozily.\n\nName: ${name}\nAmount: ₹${amount}\n\nThank you!`;
+                const encodedMessage = encodeURIComponent(message);
+                const whatsappURL = `https://wa.me/919596153432?text=${encodedMessage}`;
+                
+                // Set up WhatsApp button
+                document.getElementById('whatsappNotify').addEventListener('click', function() {
+                    window.open(whatsappURL, '_blank');
+                });
+            }
+            
+            // Check if returning from payment when page loads
+            checkIfReturningFromPayment();
+        });
+    </script>
+</body>
+</html> 
