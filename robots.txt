@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Allow: /blog.html
+Allow: /grocery-delivery-kashmir.html
+Allow: /policies.html
+Allow: /donate.html
+
+# Sitemap location
+Sitemap: https://grozily.vercel.app/sitemap.xml 

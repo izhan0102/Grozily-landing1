@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grocery Delivery in Kashmir | Grozily - Kashmir's Best Grocery Delivery Service</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Looking for grocery delivery in Kashmir? Grozily offers fast, reliable grocery delivery service across Kashmir including Srinagar, Baramulla, Budgam & more. Order groceries online now!">
+    <meta name="keywords" content="grocery delivery Kashmir, online grocery Kashmir, grocery delivery Srinagar, Kashmir grocery app, hyperlocal delivery Kashmir, doorstep delivery Kashmir, grocery shopping Kashmir">
+    <meta name="author" content="Muhammad Izhan">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://grozily.vercel.app/grocery-delivery-kashmir.html">
+    <meta property="og:title" content="Grocery Delivery in Kashmir | Grozily">
+    <meta property="og:description" content="Order groceries from your local shops in Kashmir and get them delivered to your doorstep. Fast, reliable delivery across Kashmir.">
+    <meta property="og:image" content="logo.jpg">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://grozily.vercel.app/grocery-delivery-kashmir.html">
+    <meta property="twitter:title" content="Grocery Delivery in Kashmir | Grozily">
+    <meta property="twitter:description" content="Order groceries from your local shops in Kashmir and get them delivered to your doorstep. Fast, reliable delivery across Kashmir.">
+    <meta property="twitter:image" content="logo.jpg">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://grozily.vercel.app/grocery-delivery-kashmir.html">
+    
+    <!-- Favicons for all devices -->
+    <link rel="icon" href="logo.jpg">
+    <link rel="apple-touch-icon" href="logo.jpg">
+    <meta name="theme-color" content="#6600cc">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Fredoka+One&family=Pacifico&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+            height: 100%;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #9933ff 0%, #6600cc 100%) fixed;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            will-change: transform;
+            -webkit-overflow-scrolling: touch;
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #9933ff 0%, #6600cc 100%);
+            z-index: -2;
+        }
+        
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 1000;
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .header.scrolled {
+            background: rgba(102, 0, 204, 0.9);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .site-name {
+            font-size: 28px;
+            font-weight: 700;
+            color: white;
+            position: relative;
+            letter-spacing: 0.5px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            font-family: 'Fredoka One', cursive;
+        }
+        
+        .navbar {
+            display: flex;
+            align-items: center;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin: 0 15px;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            position: relative;
+            transition: all 0.3s;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: white;
+            transition: width 0.3s;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .main-content {
+            padding-top: 100px;
+            flex: 1;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+        
+        .hero-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 60px 0;
+        }
+        
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .hero-subtitle {
+            font-size: 1.8rem;
+            font-weight: 500;
+            margin-bottom: 30px;
+            max-width: 800px;
+        }
+        
+        .cta-button {
+            background: linear-gradient(145deg, #ff80ab, #f06292);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin: 50px 0;
+        }
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .feature-icon {
+            font-size: 40px;
+            margin-bottom: 20px;
+            color: #ff80ab;
+        }
+        
+        .feature-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .feature-text {
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+        
+        .areas-section {
+            margin: 80px 0;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 40px;
+            text-align: center;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(to right, #ff80ab, rgba(255, 255, 255, 0.5));
+            border-radius: 3px;
+        }
+        
+        .areas-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        
+        .area-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border-radius: 12px;
+            padding: 25px;
+            transition: transform 0.3s, background 0.3s;
+        }
+        
+        .area-card:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-5px);
+        }
+        
+        .area-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+        
+        .area-details {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .cta-section {
+            text-align: center;
+            margin: 80px 0;
+            padding: 60px 40px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        }
+        
+        .cta-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        
+        .cta-text {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        footer {
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 40px 20px;
+            margin-top: auto;
+            text-align: center;
+        }
+        
+        .footer-text {
+            margin-bottom: 15px;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: #ff80ab;
+        }
+        
+        @media (max-width: 991px) {
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .hero-title {
+                font-size: 3rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.4rem;
+            }
+            
+            .features-grid, .areas-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .cta-title {
+                font-size: 1.8rem;
+            }
+            
+            .cta-text {
+                font-size: 1rem;
+            }
+            
+            .cta-button {
+                padding: 12px 30px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo-container">
+            <div class="site-name">Grozily</div>
+        </div>
+        
+        <nav class="navbar">
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#areas">Coverage</a></li>
+                <li><a href="#cta">Download</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <section class="hero-section">
+            <h1 class="hero-title">Grocery Delivery in Kashmir</h1>
+            <p class="hero-subtitle">Order groceries online from your favorite local stores and get them delivered to your doorstep across Kashmir</p>
+            <a href="#cta" class="cta-button">
+                <i class="fas fa-shopping-basket"></i> Start Shopping
+            </a>
+        </section>
+        
+        <section id="features" class="features-section">
+            <h2 class="section-title">Why Choose Grozily?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h3 class="feature-title">100% Local</h3>
+                    <p class="feature-text">Support local businesses in Kashmir. We partner with neighborhood kirana shops and general stores to bring their products online.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3 class="feature-title">Fast Delivery</h3>
+                    <p class="feature-text">Get your groceries delivered quickly to your doorstep. Our hyperlocal model ensures faster delivery times.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3 class="feature-title">Easy to Use</h3>
+                    <p class="feature-text">Our app is designed to be simple and intuitive, making grocery shopping a breeze for everyone in Kashmir.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h3 class="feature-title">No Middlemen</h3>
+                    <p class="feature-text">Connect directly with shopkeepers without any middlemen. Get fair prices and support local vendors.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="feature-title">Community Focused</h3>
+                    <p class="feature-text">We create job opportunities for local youth who can earn by delivering groceries in their neighborhoods.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="feature-title">Trusted Stores</h3>
+                    <p class="feature-text">Shop from verified local stores you already know and trust, now available online through our platform.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="areas" class="areas-section">
+            <h2 class="section-title">Areas We Serve in Kashmir</h2>
+            <div class="areas-grid">
+                <div class="area-card">
+                    <h3 class="area-name">Srinagar</h3>
+                    <p class="area-details">Downtown, Lal Chowk, Rajbagh, Jawahar Nagar, Dalgate, Karan Nagar, Hazratbal, Batmaloo, Bemina, and surrounding areas</p>
+                </div>
+                
+                <div class="area-card">
+                    <h3 class="area-name">Budgam</h3>
+                    <p class="area-details">Budgam Town, Chadoora, Charari Sharief, Beerwah, Magam, and nearby villages</p>
+                </div>
+                
+                <div class="area-card">
+                    <h3 class="area-name">Baramulla</h3>
+                    <p class="area-details">Baramulla Town, Sopore, Uri, Pattan, Tangmarg, and adjacent areas</p>
+                </div>
+                
+                <div class="area-card">
+                    <h3 class="area-name">Anantnag</h3>
+                    <p class="area-details">Anantnag Town, Bijbehara, Pahalgam, and surrounding regions</p>
+                </div>
+                
+                <div class="area-card">
+                    <h3 class="area-name">Pulwama</h3>
+                    <p class="area-details">Pulwama Town, Pampore, Tral, Awantipora, and nearby localities</p>
+                </div>
+                
+                <div class="area-card">
+                    <h3 class="area-name">Coming Soon</h3>
+                    <p class="area-details">Shopian, Kulgam, Ganderbal, Bandipora, Kupwara, and other districts across Kashmir</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="cta" class="cta-section">
+            <h2 class="cta-title">Ready to Start Shopping?</h2>
+            <p class="cta-text">Download the Grozily app now and experience the convenience of online grocery shopping in Kashmir with doorstep delivery.</p>
+            <a href="index.html" class="cta-button">
+                <i class="fas fa-download"></i> Download App
+            </a>
+        </section>
+    </main>
+
+    <footer>
+        <p class="footer-text">© 2023 Grozily - Kashmir's Own Grocery Delivery Platform</p>
+        <div class="footer-links">
+            <a href="index.html">Home</a>
+            <a href="policies.html">Policies</a>
+            <a href="donate.html">Support Us</a>
+        </div>
+        <p>Contact: grozily.shop@gmail.com | +91 8082986062</p>
+    </footer>
+    
+    <script>
+        // Script for sticky header
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('.header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                } else {
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        const headerOffset = 85;
+                        const elementPosition = targetElement.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                        
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html> 
