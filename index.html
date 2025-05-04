@@ -2336,5 +2336,11 @@
             window.addEventListener('scroll', updateHeaderAppearance, { passive: true });
         }, {passive: true});
     </script>
+    
+    <!-- Vercel Analytics -->
+    <script type="module">
+        import { inject } from '@vercel/analytics';
+        inject();
+    </script>
 </body>
 </html>
