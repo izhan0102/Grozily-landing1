@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grozily Vendor Payment</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Grozily</h1>
+            <p>Hyperlocal Grocery Delivery for Kashmir</p>
+        </div>
+        
+        <div class="payment-container">
+            <h2>Registration Payment</h2>
+            
+            <div class="business-type-selection">
+                <h3>Select Your Business Type</h3>
+                <div class="business-options">
+                    <div class="business-option" data-type="store" data-amount="200">
+                        <h4>Store</h4>
+                        <p>Small local store</p>
+                        <p class="price">₹200</p>
+                    </div>
+                    <div class="business-option" data-type="mart" data-amount="350">
+                        <h4>Mart</h4>
+                        <p>Medium-sized market</p>
+                        <p class="price">₹350</p>
+                    </div>
+                    <div class="business-option" data-type="brand" data-amount="500">
+                        <h4>Brand</h4>
+                        <p>Established brand</p>
+                        <p class="price">₹500</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="payment-options" style="display: none;">
+                <h3>Payment Options</h3>
+                <p>Selected Type: <span id="selected-type"></span></p>
+                <p>Amount: ₹<span id="selected-amount"></span></p>
+                
+                <div class="payment-methods">
+                    <div class="qr-payment">
+                        <h4>Pay via QR Code</h4>
+                        <p>Scan this QR code to pay</p>
+                        <div class="qr-image">
+                            <img src="qr.png" alt="Payment QR Code">
+                        </div>
+                    </div>
+                    
+                    <div class="upi-payment">
+                        <h4>Pay via UPI Link</h4>
+                        <p>Click the button below to pay directly via UPI</p>
+                        <a id="upi-link" href="" class="upi-button" target="_blank">Pay Now</a>
+                        <p class="reminder">Please take a screenshot of your payment confirmation</p>
+                    </div>
+                </div>
+                
+                <div class="screenshot-upload">
+                    <h4>Upload Payment Screenshot</h4>
+                    <p>Please upload a screenshot of your payment confirmation</p>
+                    <input type="file" id="payment-screenshot" accept="image/*">
+                    <div id="preview-container" style="display: none;">
+                        <h4>Preview</h4>
+                        <img id="screenshot-preview" src="" alt="Screenshot Preview">
+                    </div>
+                    <button id="proceed-to-registration" disabled>Proceed to Registration</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script type="module" src="script.js"></script>
+</body>
+</html> 
