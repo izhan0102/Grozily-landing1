@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grozily Vendor Registration</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Grozily</h1>
+            <p>Hyperlocal Grocery Delivery for Kashmir</p>
+        </div>
+        
+        <div class="registration-container">
+            <h2>Vendor Registration</h2>
+            <p>Complete your registration to join Grozily's vendor network</p>
+            
+            <form id="registration-form">
+                <div class="form-group">
+                    <label for="vendor-name">Business Name</label>
+                    <input type="text" id="vendor-name" name="vendor-name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="owner-name">Owner's Name</label>
+                    <input type="text" id="owner-name" name="owner-name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" placeholder="10 digit mobile number" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" minlength="8" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="confirm-password">Confirm Password</label>
+                    <input type="password" id="confirm-password" name="confirm-password" minlength="8" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="address">Business Address</label>
+                    <textarea id="address" name="address" rows="3" required></textarea>
+                </div>
+                
+                <button type="submit" id="register-btn">Register</button>
+            </form>
+            
+            <div id="registration-success" style="display: none;">
+                <h3>Registration Successful!</h3>
+                <p>Thank you for registering with Grozily. We will review your application and contact you soon.</p>
+            </div>
+        </div>
+    </div>
+    
+    <script type="module" src="script.js"></script>
+</body>
+</html> 

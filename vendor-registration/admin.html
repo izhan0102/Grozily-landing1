@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grozily Admin Panel</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container admin-container">
+        <div class="header">
+            <h1>Grozily Admin Panel</h1>
+            <p>Vendor Registration Management</p>
+        </div>
+        
+        <div class="admin-login" id="admin-login">
+            <h2>Admin Login</h2>
+            <div class="form-group">
+                <label for="admin-username">Username</label>
+                <input type="text" id="admin-username" name="admin-username">
+            </div>
+            <div class="form-group">
+                <label for="admin-password">Password</label>
+                <input type="password" id="admin-password" name="admin-password">
+            </div>
+            <button id="admin-login-btn">Login</button>
+        </div>
+        
+        <div class="admin-dashboard" id="admin-dashboard" style="display: none;">
+            <h2>Registered Vendors</h2>
+            
+            <div class="filter-controls">
+                <input type="text" id="search-vendors" placeholder="Search vendors...">
+                <select id="filter-type">
+                    <option value="all">All Business Types</option>
+                    <option value="store">Store</option>
+                    <option value="mart">Mart</option>
+                    <option value="brand">Brand</option>
+                </select>
+            </div>
+            
+            <div id="vendors-list" class="vendors-list">
+                <!-- Vendor cards will be dynamically inserted here -->
+                <div class="no-vendors" id="no-vendors">No vendors registered yet.</div>
+            </div>
+        </div>
+        
+        <div class="vendor-details-modal" id="vendor-details-modal">
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <h2>Vendor Details</h2>
+                <div id="vendor-details-content">
+                    <!-- Vendor details will be displayed here -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script type="module" src="admin.js"></script>
+</body>
+</html> 
