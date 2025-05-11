@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grozily Vendor Registration</title>
+    <link rel="stylesheet" href="reg.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo-container">
+                <h1>Grozily Vendor Registration</h1>
+                <p>Join our growing network of grocery vendors</p>
+            </div>
+        </header>
+
+        <main>
+            <div class="form-container">
+                <div class="progress-bar">
+                    <div class="step active" id="step1-indicator">
+                        <i class="fas fa-store"></i>
+                        <span>Business Info</span>
+                    </div>
+                    <div class="step" id="step2-indicator">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Location</span>
+                    </div>
+                    <div class="step" id="step3-indicator">
+                        <i class="fas fa-user-lock"></i>
+                        <span>Account Setup</span>
+                    </div>
+                </div>
+
+                <form id="vendorForm">
+                    <!-- Step 1: Business Information -->
+                    <div id="step1" class="form-step active">
+                        <h2>Business Information</h2>
+                        <p class="step-description">Tell us about your business</p>
+                        
+                        <div class="form-group">
+                            <label for="name">Business Name</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-store input-icon"></i>
+                                <input type="text" id="name" name="name" placeholder="Enter your business name" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-phone-alt input-icon"></i>
+                                <input type="tel" id="phone" name="phone" placeholder="10-digit phone number" required>
+                            </div>
+                            <span class="input-hint">Format: 10 digits with no spaces or dashes</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="storeType">Store Type</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-shopping-basket input-icon"></i>
+                                <select id="storeType" name="storeType" required>
+                                    <option value="" disabled selected>Select your store type</option>
+                                    <option value="generalStore">General Store</option>
+                                    <option value="wholeSale">Whole Sale</option>
+                                    <option value="kirana">Kirana</option>
+                                    <option value="vegetableSeller">Vegetable Seller</option>
+                                    <option value="mart">Mart</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <button type="button" id="nextBtn1" class="next-btn">Next <i class="fas fa-arrow-right"></i></button>
+                    </div>
+
+                    <!-- Step 2: Location Information -->
+                    <div id="step2" class="form-step">
+                        <h2>Location Details</h2>
+                        <p class="step-description">Tell us where your business is located</p>
+                        
+                        <div class="form-group">
+                            <label for="city">City</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-city input-icon"></i>
+                                <input type="text" id="city" name="city" placeholder="Enter your city" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="district">District</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-map input-icon"></i>
+                                <input type="text" id="district" name="district" placeholder="Enter your district" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="areaName">Area Name</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-map-marker-alt input-icon"></i>
+                                <input type="text" id="areaName" name="areaName" placeholder="e.g., Hyderpora" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="pinCode">PIN Code</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-map-pin input-icon"></i>
+                                <input type="text" id="pinCode" name="pinCode" placeholder="e.g., 190014" required>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" id="backBtn1" class="back-btn"><i class="fas fa-arrow-left"></i> Back</button>
+                            <button type="button" id="nextBtn2" class="next-btn">Next <i class="fas fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Account Information -->
+                    <div id="step3" class="form-step">
+                        <h2>Account Setup</h2>
+                        <p class="step-description">Create your account credentials</p>
+                        
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-envelope input-icon"></i>
+                                <input type="email" id="email" name="email" placeholder="Enter your email address" required>
+                            </div>
+                            <span class="input-hint">This will be used for important notifications</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <div class="password-field">
+                                <i class="fas fa-lock input-icon"></i>
+                                <input type="password" id="password" name="password" placeholder="Create a strong password" required>
+                                <i class="fas fa-eye-slash toggle-password" data-for="password"></i>
+                            </div>
+                            <span class="input-hint">Minimum 6 characters, use a combination of letters and numbers</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="confirmPassword">Confirm Password</label>
+                            <div class="password-field">
+                                <i class="fas fa-lock input-icon"></i>
+                                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Retype your password" required>
+                                <i class="fas fa-eye-slash toggle-password" data-for="confirmPassword"></i>
+                            </div>
+                        </div>
+
+                        <div class="credentials-note">
+                            <i class="fas fa-info-circle"></i>
+                            <p>Please remember these login details for accessing your vendor account in the future.</p>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" id="backBtn2" class="back-btn"><i class="fas fa-arrow-left"></i> Back</button>
+                            <button type="submit" class="submit-btn">Submit Registration</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </main>
+
+        <div id="successMessage" class="success-message hidden">
+            <i class="fas fa-check-circle"></i>
+            <h2>Registration Successful!</h2>
+            <p>Thank you for registering with Grozily. We will review your information and get back to you soon.</p>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="vendor.js"></script>
+</body>
+</html> 

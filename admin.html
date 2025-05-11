@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grozily Admin Dashboard</title>
+    <link rel="stylesheet" href="reg.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container admin-container">
+        <header>
+            <div class="logo-container">
+                <h1>Grozily Admin Dashboard</h1>
+                <p>Manage vendor registrations</p>
+            </div>
+            <a href="index.html" class="home-link"><i class="fas fa-home"></i> Back to Registration</a>
+            <button id="logoutBtn" class="logout-btn hidden"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        </header>
+
+        <div id="loginForm" class="login-form">
+            <h2><i class="fas fa-lock"></i> Admin Login</h2>
+            <p class="step-description">Enter your credentials to access the dashboard</p>
+            
+            <div class="form-group">
+                <label for="username">Username</label>
+                <div class="input-with-icon">
+                    <i class="fas fa-user input-icon"></i>
+                    <input type="text" id="username" name="username" placeholder="Enter username" required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="password-field">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" id="password" name="password" placeholder="Enter password" required>
+                    <i class="fas fa-eye-slash toggle-password" data-for="password"></i>
+                </div>
+            </div>
+            
+            <button id="loginBtn" class="submit-btn">Login <i class="fas fa-arrow-right"></i></button>
+            <p id="loginError" class="error-message hidden">Invalid username or password!</p>
+        </div>
+
+        <main id="adminDashboard" class="admin-dashboard hidden">
+            <div class="dashboard-header">
+                <h2><i class="fas fa-store"></i> Vendor Registrations</h2>
+                <div class="dashboard-actions">
+                    <div class="search-container">
+                        <input type="text" id="searchVendors" placeholder="Search vendors...">
+                        <i class="fas fa-search search-icon"></i>
+                    </div>
+                    <select id="statusFilter">
+                        <option value="all">All Status</option>
+                        <option value="pending">Pending</option>
+                        <option value="approved">Approved</option>
+                        <option value="rejected">Rejected</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div id="vendorListContainer" class="vendor-list-container">
+                <div id="vendorList" class="vendor-list">
+                    <!-- Vendor registrations will be loaded here -->
+                    <p class="no-vendors hidden">No vendor registrations yet.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html> 
